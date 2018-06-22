@@ -15,7 +15,18 @@ app.css.append_css({'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 #     'columnCount': 2}
 
 #####################################################################
-# ELEMENTS
+# STYLES
+#####################################################################
+
+styles = {
+    'objective-form': {'columnCount': 2}}
+
+#####################################################################
+# SPECIFICATIONS FORM
+#####################################################################
+
+#####################################################################
+# OBJECTIVE FORM
 #####################################################################
 
 objective_labels = [
@@ -24,77 +35,60 @@ objective_labels = [
     'Stability',
     'Reliability',
     'Robustness']
-objective_elements = [(
-        html.Label(l),
-        dcc.Slider(
-            id=l.lower() + '-slider',
-            min=1,
-            max=5,
-            marks={i: str(i) for i in range(1, 6)} if j == 4 else {},
-            value=5-j))
-    for j, l in enumerate(objective_labels)]
+
+objective_input_labels = [
+    html.Label(
+        children=l,
+        htmlFor=l.lower() + '-slider')
+    for l in objective_labels]
+
+objective_input_sliders = [
+    dcc.Slider(
+        id=l.lower() + '-slider',
+        min=1,
+        max=5,
+        marks={j: str(j) for j in range(1, 6)} if i == 4 else {},
+        value=1 if i else 5)
+    for i, l in enumerate(objective_labels)]
+
+objective_form_rows = zip(
+    objective_input_labels,
+    objective_input_sliders)
+
+objective_form = html.Form(
+    children=html.Fieldset(
+        children=(
+            [html.Legend('Objectives')]
+            + [html.P(children=list(r)) for r in objective_form_rows])),
+    id='objective-form')
+
+#####################################################################
+# DESIGN FORM
+#####################################################################
+
+#####################################################################
+# CONVEYOR LAYOUT GRAPH (LINES)
+#####################################################################
+
+#####################################################################
+# COST GRAPH
+#####################################################################
 
 #####################################################################
 # LAYOUT
 #####################################################################
 
 app.layout = html.Div(
-    children=(
-        [e[0] for e in objective_elements]
-        + [e[1] for e in objective_elements]))
+    children=[objective_form],
+    id='main-container')
+
+#####################################################################
+# CALLBACKS
+#####################################################################
+
+#####################################################################
+# SERVER
+#####################################################################
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-
-# [
-#     html.Label('Dropdown'),
-#     dcc.Dropdown(
-#         options=[
-#             {'label': 'New York City', 'value': 'NYC'},
-#             {'label': u'Montréal', 'value': 'MTL'},
-#             {'label': 'San Francisco', 'value': 'SF'}
-#         ],
-#         value='MTL'
-#     ),
-
-#     html.Label('Multi-Select Dropdown'),
-#     dcc.Dropdown(
-#         options=[
-#             {'label': 'New York City', 'value': 'NYC'},
-#             {'label': u'Montréal', 'value': 'MTL'},
-#             {'label': 'San Francisco', 'value': 'SF'}
-#         ],
-#         value=['MTL', 'SF'],
-#         multi=True
-#     ),
-
-#     html.Label('Radio Items'),
-#     dcc.RadioItems(
-#         options=[
-#             {'label': 'New York City', 'value': 'NYC'},
-#             {'label': u'Montréal', 'value': 'MTL'},
-#             {'label': 'San Francisco', 'value': 'SF'}
-#         ],
-#         value='MTL'
-#     ),
-
-#     html.Label('Checkboxes'),
-#     dcc.Checklist(
-#         options=[
-#             {'label': 'New York City', 'value': 'NYC'},
-#             {'label': u'Montréal', 'value': 'MTL'},
-#             {'label': 'San Francisco', 'value': 'SF'}
-#         ],
-#         values=['MTL', 'SF']
-#     ),
-
-#     html.Label('Text Input'),
-#     dcc.Input(value='MTL', type='text'),
-
-#     html.Label('Slider'),
-#     dcc.Slider(
-#         min=0,
-#         max=9,
-#         marks={i: 'Label {}'.format(i) if i == 1 else str(i) for i in range(1, 6)},
-#         value=5,
-#     )]
