@@ -22,9 +22,9 @@ app.css.append_css({'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 #####################################################################
 
 styles = {
-    'main-container': {'columnCount': 2},
-    'specifications-form': {},
-    'objective-form': {},
+    'main-container': {'columnCount': 1},
+    'specification-form': {'columnCount': 1},
+    'objective-form': {'columnCount': 5},
     'product-density-input': {'display': 'none'},
     'product-surcharge-angle-input': {'display': 'none'}}
 
@@ -59,10 +59,10 @@ specification_form_rows = [
         dcc.Input(id='product-surcharge-angle-input', type='number', value=20.0, min=0.0, step=1.0, max=90.0, style={'display': 'none'})]]
 
 specification_form = html.Form(
-    children=(
-        [html.Legend('Specifications')]
-        + [html.P(children=list(r)) for r in specification_form_rows]),
-    id='specification-form')
+    children=html.Fieldset(
+        children=[html.P(children=list(r)) for r in specification_form_rows]),
+    id='specification-form',
+    style=styles['specification-form'])
 
 #####################################################################
 # OBJECTIVE FORM
@@ -87,17 +87,19 @@ objective_input_sliders = [
         min=1,
         max=5,
         marks={j: str(j) for j in range(1, 6)} if i == 4 else {},
-        value=1 if i else 5)
+        value=1 if i else 5,
+        vertical=True)
     for i, l in enumerate(objective_labels)]
 
 objective_form_rows = zip(
-    objective_input_labels,
-    objective_input_sliders)
+    objective_input_sliders,
+    objective_input_labels)
 
 objective_form = html.Form(
-    children=(
-        [html.Legend('Objectives')]
-        + [html.P(children=list(r)) for r in objective_form_rows]),
+    children=html.Fieldset(
+        children=[
+            html.P(children=objective_input_sliders, style=styles['objective-form']),
+            html.P(children=objective_input_labels, style=styles['objective-form'])]),
     id='objective-form')
 
 #####################################################################
