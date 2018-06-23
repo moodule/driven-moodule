@@ -1,0 +1,26 @@
+select
+    bulk_material_id,
+    bulk_material_name,
+    bulk_material_min_density,
+    bulk_material_average_density,
+    bulk_material_max_density,
+    bulk_material_max_belt_speed,
+    bulk_material_max_slope_angle,
+    bulk_material_surcharge_angle,
+    bulk_material_repose_angle,
+    bulk_material_min_lump_size,
+    bulk_material_average_lump_size,
+    bulk_material_max_lump_size,
+    bulk_material_min_lump_ratio,
+    bulk_material_average_lump_ratio,
+    bulk_material_max_lump_ratio,
+    flowability_id,
+    flowability_id_c3,
+    flowability_name,
+    flowability_factor,
+    abrasion_id,
+    abrasion_id_c3,
+    abrasion_name,
+    abrasion_factor
+from view_bulk_material
+order by bulk_material_name;
