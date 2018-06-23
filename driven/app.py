@@ -10,7 +10,7 @@ import dash_html_components as html
 # APP
 #####################################################################
 
-app = dash.Dash()
+app = dash.Dash('Industrious')
 
 app.css.append_css({'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'})
 
@@ -34,9 +34,8 @@ styles = {
 
 specification_form_rows = [
     [
-        html.Label('Delta-x', htmlFor='delta-x-input'),
-        dcc.Input(id='delta-x-input', type='number', value=1.0, min=0.1, step=0.1, max=1.0e5),
-        html.Abbr('m')],
+        html.Label('Delta-x (m)', id='delta-x-label', htmlFor='delta-x-input'),
+        dcc.RangeSlider(id='delta-x-input', value=[1.0e1, 1.0e1], min=1.0, step=1.0, max=1.0e5)],
     [
         html.Label('Delta-y', htmlFor='delta-y-input'),
         dcc.Input(id='delta-y-input', type='number', value=0.0, min=-1.0e3, step=0.1, max=1.0e3),
@@ -64,10 +63,9 @@ specification_form_rows = [
         html.Abbr('°')]]
 
 specification_form = html.Form(
-    children=html.Fieldset(
-        children=(
-            [html.Legend('Specifications')]
-            + [html.P(children=list(r)) for r in specification_form_rows])),
+    children=(
+        [html.Legend('Specifications')]
+        + [html.P(children=list(r)) for r in specification_form_rows]),
     id='specification-form')
 
 #####################################################################
@@ -101,10 +99,9 @@ objective_form_rows = zip(
     objective_input_sliders)
 
 objective_form = html.Form(
-    children=html.Fieldset(
-        children=(
-            [html.Legend('Objectives')]
-            + [html.P(children=list(r)) for r in objective_form_rows])),
+    children=(
+        [html.Legend('Objectives')]
+        + [html.P(children=list(r)) for r in objective_form_rows]),
     id='objective-form')
 
 #####################################################################
@@ -131,6 +128,15 @@ app.layout = html.Div(
 #####################################################################
 # CALLBACKS
 #####################################################################
+
+@app.callback(
+    dash.dependencies.Output('delta-x-label', 'children'),
+    [dash.dependencies.Input('delta-x-input', 'value')])
+def set_cities_options(x_range):
+    if x_range[0] == x_range[1]:
+        return 'Delta-x (m) : {}'.format(x_range[0])
+    else:
+        return 'Delta-x (m) : [{} ; {}]'.format(x_range[0], x_range[1])
 
 #####################################################################
 # SERVER
