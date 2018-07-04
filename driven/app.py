@@ -2,9 +2,56 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import plotly.graph_objs as go
 
 # TODO even the row height in the forms
 # TODO add spaces between labels and inputs
+
+#####################################################################
+# RANDOM DATA
+#####################################################################
+slope = 0.2
+steps = [0.4, 0.2, 1.5, 0.4, -1.0, -3.0, -2.5]
+count = [5, 10, 20, 5, 2, 11, 2]
+pulleys = [[-2.0, 31.5], [-3.5, 3.2]]
+x_t, y_t = -2.0, -3.0
+x_i, y_i = [x_t], [y_t]
+x, y = x_t, y_t
+
+for i in range(7):
+    side = 0.0 if i < 3 else -1
+    
+    d_x = (count[i]-1) * steps[i]
+    d_y = d_x * slope
+
+    x += d_x
+    y += d_y
+    
+    x_i.append(x)
+    y_i.append(y + side)
+
+conveyor_layout_data = [
+    [[x_i[i] + j * steps[i] for j in range(count[i])] for i in range(7)],
+    [[y_i[i] + j * steps[i] * slope for j in range(count[i])] for i in range(7)]]
+
+conveyor_layout_figures = [
+    go.Scatter(
+        x=conveyor_layout_data[0][i],
+        y=conveyor_layout_data[1][i],
+        mode='markers+lines',
+        marker={
+            'size': 15,
+            'opacity': 0.5,
+            'line': {'width': 0.5}
+        })
+    for i in range(7)] + [
+    go.Scatter(
+        x=pulleys[0],
+        y=pulleys[1],
+        mode='markers',
+        marker={
+            'size': 50,
+            'opacity': 0.5})]
 
 #####################################################################
 # APP
@@ -18,15 +65,33 @@ app.css.append_css({'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 #     'columnCount': 2}
 
 #####################################################################
+# LAYOUTS
+#####################################################################
+
+overall_layout = (
+    """'spec obj obj obj obj obj'
+    'spec obj obj obj obj obj'
+    'spec obj obj obj obj obj'
+    'spec obj obj obj obj obj'
+    'spec obj obj obj obj obj'""")
+
+objective_layout = (
+    """'slider slider slider slider slider'
+    'slider slider slider slider slider'
+    'slider slider slider slider slider'
+    'slider slider slider slider slider'
+    'slider slider slider slider slider'
+    'label label label label label'""")
+
+#####################################################################
 # STYLES
 #####################################################################
 
 styles = {
-    'main-container': {'columnCount': 1},
-    'specification-form': {'columnCount': 1},
-    'objective-form': {'columnCount': 5},
-    'product-density-input': {'display': 'none'},
-    'product-surcharge-angle-input': {'display': 'none'}}
+    'main-container': {'flex': 'auto', 'columnCount': 1},
+    'specification-form': {'flex': 1, 'columnCount': 1},
+    'objective-form': {'flex': 1, 'columnCount': 5},
+    'conveyor-layout-graph': {'flex': 1}}
 
 #####################################################################
 # SPECIFICATIONS FORM
@@ -35,13 +100,13 @@ styles = {
 specification_form_rows = [
     [
         html.Label('Delta-x (m)', id='delta-x-label', htmlFor='delta-x-input'),
-        dcc.RangeSlider(id='delta-x-input', value=[1.0e1, 1.0e1], min=1.0, step=1.0, max=1.0e5)],
+        dcc.RangeSlider(id='delta-x-input', value=[1.0e1, 1.0e1], min=1.0, step=1.0, max=1.0e3)],
     [
-        html.Label('Delta-y (m)', htmlFor='delta-y-input'),
-        dcc.Input(id='delta-y-input', type='number', value=0.0, min=-1.0e3, step=0.1, max=1.0e3)],
+        html.Label('Delta-y (m)', id='delta-y-label', htmlFor='delta-y-input'),
+        dcc.RangeSlider(id='delta-y-input', value=[0.0, 0.0], min=-1.0e2, step=0.1, max=1.0e2)],
     [
-        html.Label('Output (t/h)', htmlFor='output'),
-        dcc.Input(id='output', type='number', value=10.0, min=0.1, step=0.1, max=1.0e4)],
+        html.Label('Output (t/h)', id='output-label', htmlFor='output-input'),
+        dcc.RangeSlider(id='output-input', value=[10.0, 10.0], min=0.0, step=0.1, max=1.0e3)],
     [
         html.Label('Product', htmlFor='product-name'),
         dcc.Dropdown(
@@ -110,6 +175,20 @@ objective_form = html.Form(
 # CONVEYOR LAYOUT GRAPH (LINES)
 #####################################################################
 
+conveyor_layout_graph = dcc.Graph(
+    id='conveyor-layout-graph',
+    figure=go.Figure(
+        data=conveyor_layout_figures,
+        layout=go.Layout(
+            title='Conveyor Layout',
+            showlegend=True,
+            legend=go.Legend(
+                x=0,
+                y=1.0
+            ),
+            margin=go.Margin(l=40, r=40, t=40, b=40)
+        )))
+
 #####################################################################
 # COST GRAPH
 #####################################################################
@@ -119,7 +198,7 @@ objective_form = html.Form(
 #####################################################################
 
 app.layout = html.Div(
-    children=[specification_form, objective_form],
+    children=[specification_form, objective_form, conveyor_layout_graph],
     id='main-container',
     style=styles['main-container'])
 
