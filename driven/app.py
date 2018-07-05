@@ -13,7 +13,13 @@ import plotly.graph_objs as go
 slope = 0.2
 steps = [0.4, 0.2, 1.5, 0.4, -1.0, -3.0, -2.5]
 count = [5, 10, 20, 5, 2, 11, 2]
-pulleys = [[-2.0, 31.5], [-3.5, 3.2]]
+source = [
+    [0.35 + 0.01 * i for i in range(100)],
+    [0.5 + -5.0 * 1.0e-4 * i ** 2 for i in range(100)]]
+target = [
+    [31.5 + 0.01 * i for i in range(200)],
+    [3.7 - 1.25e-4 * (i ** 2) + 1.923e-3 * i for i in range(200)]]
+pulleys = [[-2.0, 31.5, 0.0, 33], [-3.5, 3.2, 0.0, 1.0]]
 x_t, y_t = -2.0, -3.0
 x_i, y_i = [x_t], [y_t]
 x, y = x_t, y_t
@@ -51,7 +57,19 @@ conveyor_layout_figures = [
         mode='markers',
         marker={
             'size': 50,
-            'opacity': 0.5})]
+            'opacity': 0.5}),
+    go.Scatter(
+        x=source[0],
+        y=source[1],
+        mode='lines',
+        line={
+            'width': 0.5}),
+    go.Scatter(
+        x=target[0],
+        y=target[1],
+        mode='lines',
+        line={
+            'width': 0.5})]
 
 #####################################################################
 # APP
@@ -88,10 +106,10 @@ objective_layout = (
 #####################################################################
 
 styles = {
-    'main-container': {'flex': 'auto', 'columnCount': 1},
-    'specification-form': {'flex': 1, 'columnCount': 1},
-    'objective-form': {'flex': 1, 'columnCount': 5},
-    'conveyor-layout-graph': {'flex': 1}}
+    'main-container': {'flex': 'auto', 'columnCount': 1, 'backgroundColor': 'rgba(0,0,0,0.05)'},
+    'specification-form': {'flex': 1, 'columnCount': 1, 'backgroundColor': 'rgba(255,0,0,0.05)'},
+    'objective-form': {'flex': 1, 'columnCount': 1, 'backgroundColor': 'rgba(0,255,0,0.05)'},
+    'conveyor-layout-graph': {'flex': 1, 'backgroundColor': 'rgba(0,0,255,0.05)'}}
 
 #####################################################################
 # SPECIFICATIONS FORM
@@ -163,9 +181,10 @@ objective_form_rows = zip(
 objective_form = html.Form(
     children=html.Fieldset(
         children=[
-            html.P(children=objective_input_sliders, style=styles['objective-form']),
-            html.P(children=objective_input_labels, style=styles['objective-form'])]),
-    id='objective-form')
+            html.P(children=objective_input_sliders, style={'flex': 5, 'columnCount': 5, 'height': '200px'}),
+            html.P(children=objective_input_labels, style={'flex': 1, 'columnCount': 5})]),
+    id='objective-form',
+    style=styles['objective-form'])
 
 #####################################################################
 # DESIGN FORM
