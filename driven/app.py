@@ -122,7 +122,7 @@ objective_layout = (
 #####################################################################
 
 styles = {
-    'main-container': {'display': 'flex', 'columnCount': 2, 'backgroundColor': 'rgba(0,0,0,0.05)'},
+    'main-container': {'columnCount': 1, 'backgroundColor': 'rgba(0,0,0,0.05)'},
     'specification-form': {'flex': '1 0 50%', 'width': '50%', 'columnCount': 1, 'backgroundColor': 'rgba(255,0,0,0.05)'},
     'objective-form': {'flex': '1 0 50%', 'width': '50%', 'columnCount': 1, 'backgroundColor': 'rgba(0,255,0,0.05)'},
     'conveyor-layout-graph': {'flex': '1 0 50%', 'width': '50%', 'backgroundColor': 'rgba(0,0,255,0.05)'}}
@@ -229,12 +229,37 @@ conveyor_layout_graph = dcc.Graph(
 # COST GRAPH
 #####################################################################
 
+# buying maintenance stock energy
+
+#####################################################################
+# SAFETY GRAPH
+#####################################################################
+
+# snatching falling ?
+
+#####################################################################
+# RELIABILITY GRAPH
+#####################################################################
+
+# rmbt : min, max, average
+
+#####################################################################
+# STABILITY GRAPH
+#####################################################################
+
+# spilling lifting
+
 #####################################################################
 # LAYOUT
 #####################################################################
 
 app.layout = html.Div(
-    children=[specification_form, objective_form, conveyor_layout_graph],
+    children=[
+        html.Div(
+            children=[specification_form, objective_form],
+            style={'display': 'flex', 'columnCount': 2}),
+        html.Div(
+            children=[conveyor_layout_graph])],
     id='main-container',
     style=styles['main-container'])
 
