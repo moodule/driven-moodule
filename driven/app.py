@@ -2,7 +2,9 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import math
 import plotly.graph_objs as go
+import sqlite3
 
 # TODO even the row height in the forms
 # TODO add spaces between labels and inputs
@@ -72,6 +74,20 @@ conveyor_layout_figures = [
             'width': 0.5})]
 
 #####################################################################
+# PRODUCT DATA
+#####################################################################
+
+with sqlite3.connect('./data/referential.sqlite3') as ref_db:
+    cursor = ref_db.cursor()
+    product_catalog = {
+        product[0]: product[1:]
+        for product in cursor.execute(
+            """select id, name, average_density, surcharge_angle
+            from bulk_material
+            order by name;""")}
+print(product_catalog)
+
+#####################################################################
 # APP
 #####################################################################
 
@@ -106,10 +122,10 @@ objective_layout = (
 #####################################################################
 
 styles = {
-    'main-container': {'flex': 'auto', 'columnCount': 1, 'backgroundColor': 'rgba(0,0,0,0.05)'},
-    'specification-form': {'flex': 1, 'columnCount': 1, 'backgroundColor': 'rgba(255,0,0,0.05)'},
-    'objective-form': {'flex': 1, 'columnCount': 1, 'backgroundColor': 'rgba(0,255,0,0.05)'},
-    'conveyor-layout-graph': {'flex': 1, 'backgroundColor': 'rgba(0,0,255,0.05)'}}
+    'main-container': {'display': 'flex', 'columnCount': 2, 'backgroundColor': 'rgba(0,0,0,0.05)'},
+    'specification-form': {'flex': '1 0 50%', 'width': '50%', 'columnCount': 1, 'backgroundColor': 'rgba(255,0,0,0.05)'},
+    'objective-form': {'flex': '1 0 50%', 'width': '50%', 'columnCount': 1, 'backgroundColor': 'rgba(0,255,0,0.05)'},
+    'conveyor-layout-graph': {'flex': '1 0 50%', 'width': '50%', 'backgroundColor': 'rgba(0,0,255,0.05)'}}
 
 #####################################################################
 # SPECIFICATIONS FORM
@@ -121,24 +137,25 @@ specification_form_rows = [
         dcc.RangeSlider(id='delta-x-input', value=[1.0e1, 1.0e1], min=1.0, step=1.0, max=1.0e3)],
     [
         html.Label('Delta-y (m)', id='delta-y-label', htmlFor='delta-y-input'),
-        dcc.RangeSlider(id='delta-y-input', value=[0.0, 0.0], min=-1.0e2, step=0.1, max=1.0e2)],
+        dcc.RangeSlider(id='delta-y-input', value=[0.0, 0.0], min=-1.0e2, step=0.5, max=1.0e2)],
     [
         html.Label('Output (t/h)', id='output-label', htmlFor='output-input'),
-        dcc.RangeSlider(id='output-input', value=[10.0, 10.0], min=0.0, step=0.1, max=1.0e3)],
+        dcc.RangeSlider(id='output-input', value=[10.0, 10.0], min=0.0, step=1.0, max=1.0e3)],
     [
-        html.Label('Product', htmlFor='product-name'),
+        html.Label('Product', id='product-name-label', htmlFor='product-name-input'),
         dcc.Dropdown(
-            id='product-name',
+            id='product-name-input',
             options=[
-                {'label':'Coal', 'value':'coal'},
-                {'label':'Truc', 'value':'truc'}],
-            value='coal',
-            multi=False)],
+                {'label': product[0], 'value': pid}
+                for pid, product in product_catalog.items()],
+            clearable=False,
+            multi=False,
+            placeholder='Select a product')],
     [
-        html.Label('Bulk Density (t/m³)', htmlFor='product-density-input', style={'display': 'none'}),
+        html.Label('Bulk Density (t/m³)', id='product-density-label', htmlFor='product-density-input', style={'display': 'none'}),
         dcc.Input(id='product-density-input', type='number', value=0.5, min=1.0e-2, step=1.0e-2, max=1.0e2, style={'display': 'none'})],
     [
-        html.Label('Surcharge Angle (°)', htmlFor='product-density-input', style={'display': 'none'}),
+        html.Label('Surcharge Angle (°)', id='product-surcharge-angle-label',htmlFor='product-surcharge-angle-input', style={'display': 'none'}),
         dcc.Input(id='product-surcharge-angle-input', type='number', value=20.0, min=0.0, step=1.0, max=90.0, style={'display': 'none'})]]
 
 specification_form = html.Form(
@@ -155,12 +172,12 @@ objective_labels = [
     'Safety',
     'Cost',
     'Stability',
-    'Reliability',
-    'Robustness']
+    'Reliability']
 
 objective_input_labels = [
     html.Label(
         children=l,
+        id=l.lower() + '-label',
         htmlFor=l.lower() + '-slider')
     for l in objective_labels]
 
@@ -168,9 +185,9 @@ objective_input_sliders = [
     dcc.Slider(
         id=l.lower() + '-slider',
         min=1,
-        max=5,
-        marks={j: str(j) for j in range(1, 6)} if i == 4 else {},
-        value=1 if i else 5,
+        max=4,
+        marks={j: str(j) for j in range(1, 5)} if i == 3 else {},
+        value=1 if i else 4,
         vertical=True)
     for i, l in enumerate(objective_labels)]
 
@@ -181,8 +198,8 @@ objective_form_rows = zip(
 objective_form = html.Form(
     children=html.Fieldset(
         children=[
-            html.P(children=objective_input_sliders, style={'flex': 5, 'columnCount': 5, 'height': '200px'}),
-            html.P(children=objective_input_labels, style={'flex': 1, 'columnCount': 5})]),
+            html.P(children=objective_input_sliders, style={'flex': '5 0 auto', 'columnCount': 4, 'height': '100px'}),
+            html.P(children=objective_input_labels, style={'flex': '1 0 auto', 'columnCount': 4})]),
     id='objective-form',
     style=styles['objective-form'])
 
@@ -225,14 +242,45 @@ app.layout = html.Div(
 # CALLBACKS
 #####################################################################
 
+def display_value_in_label(value_range, label_text):
+    if value_range[0] == value_range[1]:
+        return '{} : {}'.format(label_text, value_range[0])
+    else:
+        return '{} : [{} ; {}]'.format(label_text, value_range[0], value_range[1])
+
 @app.callback(
     dash.dependencies.Output('delta-x-label', 'children'),
     [dash.dependencies.Input('delta-x-input', 'value')])
-def set_cities_options(x_range):
-    if x_range[0] == x_range[1]:
-        return 'Delta-x (m) : {}'.format(x_range[0])
-    else:
-        return 'Delta-x (m) : [{} ; {}]'.format(x_range[0], x_range[1])
+def update_delta_x_label(x_range):
+    return display_value_in_label(x_range, 'Delta-x (m)')
+
+@app.callback(
+    dash.dependencies.Output('delta-y-label', 'children'),
+    [dash.dependencies.Input('delta-y-input', 'value')])
+def update_delta_y_label(y_range):
+    return display_value_in_label(y_range, 'Delta-y (m)')
+
+@app.callback(
+    dash.dependencies.Output('output-label', 'children'),
+    [dash.dependencies.Input('output-input', 'value')])
+def update_output_label(output_range):
+    return display_value_in_label(output_range, 'Output (t/h)')
+
+@app.callback(
+    dash.dependencies.Output('product-density-input', 'value'),
+    [dash.dependencies.Input('product-name-input', 'value')])
+def update_density_input(product_id):
+    product = product_catalog.get(product_id, [])
+    if product:
+        return 0.001 * product[1]
+
+@app.callback(
+    dash.dependencies.Output('product-surcharge-angle-input', 'value'),
+    [dash.dependencies.Input('product-name-input', 'value')])
+def update_surcharge_angle_input(product_id):
+    product = product_catalog.get(product_id, [])
+    if product:
+        return 180.0 * product[2] / math.pi
 
 #####################################################################
 # SERVER
