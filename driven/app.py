@@ -92,6 +92,7 @@ print(product_catalog)
 #####################################################################
 
 app = dash.Dash('Industrious')
+server = app.server
 
 app.css.append_css({'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'})
 
@@ -122,10 +123,10 @@ objective_layout = (
 #####################################################################
 
 styles = {
-    'main-container': {'columnCount': 1, 'backgroundColor': 'rgba(0,0,0,0.05)'},
-    'specification-form': {'flex': '1 0 50%', 'width': '50%', 'columnCount': 1, 'backgroundColor': 'rgba(255,0,0,0.05)'},
-    'objective-form': {'flex': '1 0 50%', 'width': '50%', 'columnCount': 1, 'backgroundColor': 'rgba(0,255,0,0.05)'},
-    'conveyor-layout-graph': {'flex': '1 0 50%', 'width': '50%', 'backgroundColor': 'rgba(0,0,255,0.05)'}}
+    'main-container': {'columnCount': 1, 'backgroundColor': 'rgba(0,0,0,0.0)'},
+    'specification-form': {'flex': '1 0 50%', 'width': '50%', 'columnCount': 1, 'backgroundColor': 'rgba(255,0,0,0.0)'},
+    'objective-form': {'flex': '1 0 50%', 'width': '50%', 'columnCount': 1, 'backgroundColor': 'rgba(0,255,0,0.0)'},
+    'conveyor-layout-graph': {'flex': '1 0 50%', 'width': '50%', 'backgroundColor': 'rgba(0,0,255,0.0)'}}
 
 #####################################################################
 # SPECIFICATIONS FORM
