@@ -26,6 +26,7 @@ setup_requirements = [
     'wheel>=0.29.0',
     'watchdog>=0.8.3',
     'Sphinx>=1.4.8',
+    'gunicorn>=19.9.0'
     # TODO(moodule): put setup requirements (distutils extensions, etc.) here
 ]
 
