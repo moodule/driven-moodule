@@ -85,7 +85,6 @@ with sqlite3.connect('./data/referential.sqlite3') as ref_db:
             """select id, name, average_density, surcharge_angle
             from bulk_material
             order by name;""")}
-print(product_catalog)
 
 #####################################################################
 # APP
@@ -219,11 +218,11 @@ conveyor_layout_graph = dcc.Graph(
         layout=go.Layout(
             title='Conveyor Layout',
             showlegend=True,
-            legend=go.Legend(
+            legend=go.layout.Legend(
                 x=0,
                 y=1.0
             ),
-            margin=go.Margin(l=40, r=40, t=40, b=40)
+            margin=go.layout.Margin(l=40, r=40, t=40, b=40)
         )))
 
 #####################################################################
