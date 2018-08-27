@@ -79,7 +79,8 @@ conveyor_layout_figures = [
 # PRODUCT DATA
 #####################################################################
 
-print(os.stat('./data/referential.sqlite3'))
+print(os.listdir())
+print('================ {} ================'.format(os.getcwd()))
 
 with sqlite3.connect('./data/referential.sqlite3') as ref_db:
     cursor = ref_db.cursor()
