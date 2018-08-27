@@ -79,10 +79,7 @@ conveyor_layout_figures = [
 # PRODUCT DATA
 #####################################################################
 
-with sqlite3.connect('./data/referential.sqlite3') as ref_db:
-    cursor = ref_db.cursor()
-    cursor.execute("select name from sqlite_master where type='table';")
-    print(cursor.fetchall())
+print(os.stat('./data/referential.sqlite3'))
 
 with sqlite3.connect('./data/referential.sqlite3') as ref_db:
     cursor = ref_db.cursor()
