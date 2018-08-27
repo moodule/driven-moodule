@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+import math
+import os
+import sqlite3
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import math
 import plotly.graph_objs as go
-import sqlite3
 
 # TODO even the row height in the forms
 # TODO add spaces between labels and inputs
@@ -76,6 +78,11 @@ conveyor_layout_figures = [
 #####################################################################
 # PRODUCT DATA
 #####################################################################
+
+if os.path.exists('./data/referential.sqlite3'):
+    print('*YOLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO*')
+else:
+    print('*FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUCK*')
 
 with sqlite3.connect('./data/referential.sqlite3') as ref_db:
     cursor = ref_db.cursor()
