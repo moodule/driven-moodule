@@ -79,6 +79,11 @@ conveyor_layout_figures = [
 # PRODUCT DATA
 #####################################################################
 
+if os.path.exists('./data/referential.sqlite3'):
+    print('*YOLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO*')
+else:
+    print('*FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUCK*')
+
 with sqlite3.connect('./data/referential.sqlite3') as ref_db:
     cursor = ref_db.cursor()
     cursor.execute("select name from sqlite_master where type='table';")
