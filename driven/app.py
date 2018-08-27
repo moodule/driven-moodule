@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import math
-import os
 import sqlite3
 
 import dash
@@ -79,10 +78,7 @@ conveyor_layout_figures = [
 # PRODUCT DATA
 #####################################################################
 
-print(os.listdir())
-print('================ {} ================'.format(os.getcwd()))
-
-with sqlite3.connect('./data/referential.sqlite3') as ref_db:
+with sqlite3.connect('./driven/data/referential.sqlite3') as ref_db:
     cursor = ref_db.cursor()
     product_catalog = {
         product[0]: product[1:]
