@@ -71,4 +71,3 @@ target/
 
 # Datasets & NN models
 *.csv
-*.sqlite3
