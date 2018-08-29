@@ -335,7 +335,8 @@ app.layout = html.Div(
             children=[specification_form, objective_form],
             style={'display': 'flex', 'columnCount': 2}),
         html.Div(
-            children=[conveyor_layout_graph, navigation_graph])],
+            children=[conveyor_layout_graph, navigation_graph],
+            style={'display': 'flex', 'columnCount': 2})],
     id='main-container',
     style=styles['main-container'])
 
