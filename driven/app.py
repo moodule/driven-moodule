@@ -76,8 +76,8 @@ conveyor_layout_figures = [
 
 navigation_data = [
     go.Bar(
-        y=['carry', 'return'],
-        x=[6, 0],
+        y=['carry'],
+        x=[6],
         name='Tail transition',
         orientation = 'h',
         marker = dict(
@@ -86,8 +86,8 @@ navigation_data = [
                 color = 'rgba(246, 78, 139, 1.0)',
                 width = 3))),
     go.Bar(
-        y=['carry', 'return'],
-        x=[8, 0],
+        y=['carry'],
+        x=[2],
         name='Feed',
         orientation = 'h',
         marker = dict(
@@ -96,45 +96,45 @@ navigation_data = [
                 color = 'rgba(246, 78, 139, 1.0)',
                 width = 3))),
     go.Bar(
-        y=['carry', 'return'],
-        x=[100, 0],
+        y=['carry'],
+        x=[100],
         name='Section 1',
         orientation='h',
         marker=dict(line=dict(width=3))),
     go.Bar(
-        y=['carry', 'return'],
-        x=[110, 0],
+        y=['carry'],
+        x=[10],
         name='Head transition',
         orientation='h',
         marker=dict(line=dict(width=3))),
     go.Bar(
-        y=['carry', 'return'],
-        x=[0, 110],
-        name='Belt return 2',
+        y=['return'],
+        x=[20],
+        name='Belt return 1',
         orientation='h',
         marker=dict(line=dict(width=3))),
     go.Bar(
-        y=['carry', 'return'],
-        x=[0, 90],
-        name='Takeup',
-        orientation='h',
-        marker=dict(line=dict(width=3))),
-    go.Bar(
-        y=['carry', 'return'],
-        x=[0, 80],
-        name='Drive group',
-        orientation='h',
-        marker=dict(line=dict(width=3))),
-    go.Bar(
-        y=['carry', 'return'],
-        x=[0, 75],
+        y=['return'],
+        x=[75],
         name='Section 1',
         orientation='h',
         marker=dict(line=dict(width=3))),
     go.Bar(
-        y=['carry', 'return'],
-        x=[0, 20],
-        name='Belt return 1',
+        y=['return'],
+        x=[20],
+        name='Belt return 2',
+        orientation='h',
+        marker=dict(line=dict(width=3))),
+    go.Bar(
+        y=['return'],
+        x=[5],
+        name='Drive group',
+        orientation='h',
+        marker=dict(line=dict(width=3))),
+    go.Bar(
+        y=['return'],
+        x=[10],
+        name='Takeup',
         orientation='h',
         marker=dict(line=dict(width=3)))]
 
