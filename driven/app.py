@@ -74,6 +74,70 @@ conveyor_layout_figures = [
         line={
             'width': 0.5})]
 
+navigation_data = [
+    go.Bar(
+        y=['carry', 'return'],
+        x=[6, 0],
+        name='Tail transition',
+        orientation = 'h',
+        marker = dict(
+            color = 'rgba(246, 78, 139, 0.6)',
+            line = dict(
+                color = 'rgba(246, 78, 139, 1.0)',
+                width = 3))),
+    go.Bar(
+        y=['carry', 'return'],
+        x=[8, 0],
+        name='Feed',
+        orientation = 'h',
+        marker = dict(
+            color = 'rgba(246, 78, 139, 0.6)',
+            line = dict(
+                color = 'rgba(246, 78, 139, 1.0)',
+                width = 3))),
+    go.Bar(
+        y=['carry', 'return'],
+        x=[100, 0],
+        name='Section 1',
+        orientation='h',
+        marker=dict(line=dict(width=3))),
+    go.Bar(
+        y=['carry', 'return'],
+        x=[110, 0],
+        name='Head transition',
+        orientation='h',
+        marker=dict(line=dict(width=3))),
+    go.Bar(
+        y=['carry', 'return'],
+        x=[0, 110],
+        name='Belt return 2',
+        orientation='h',
+        marker=dict(line=dict(width=3))),
+    go.Bar(
+        y=['carry', 'return'],
+        x=[0, 90],
+        name='Takeup',
+        orientation='h',
+        marker=dict(line=dict(width=3))),
+    go.Bar(
+        y=['carry', 'return'],
+        x=[0, 80],
+        name='Drive group',
+        orientation='h',
+        marker=dict(line=dict(width=3))),
+    go.Bar(
+        y=['carry', 'return'],
+        x=[0, 75],
+        name='Section 1',
+        orientation='h',
+        marker=dict(line=dict(width=3))),
+    go.Bar(
+        y=['carry', 'return'],
+        x=[0, 20],
+        name='Belt return 1',
+        orientation='h',
+        marker=dict(line=dict(width=3)))]
+
 #####################################################################
 # PRODUCT DATA
 #####################################################################
@@ -226,6 +290,17 @@ conveyor_layout_graph = dcc.Graph(
             margin=go.layout.Margin(l=40, r=40, t=40, b=40)
         )))
 
+navigation_graph = dcc.Graph(
+    id='navigation-graph',
+    figure=go.Figure(
+        data=navigation_data,
+        layout=go.Layout(
+            title='Navigation',
+            barmode='stack',
+            showlegend=True,
+            margin=go.layout.Margin(l=40, r=40, t=40, b=40)
+        )))
+
 #####################################################################
 # COST GRAPH
 #####################################################################
@@ -260,7 +335,7 @@ app.layout = html.Div(
             children=[specification_form, objective_form],
             style={'display': 'flex', 'columnCount': 2}),
         html.Div(
-            children=[conveyor_layout_graph])],
+            children=[conveyor_layout_graph, navigation_graph])],
     id='main-container',
     style=styles['main-container'])
 
