@@ -296,8 +296,16 @@ navigation_graph = dcc.Graph(
         data=navigation_data,
         layout=go.Layout(
             title='Navigation',
+<<<<<<< HEAD
             barmode='stack',
             showlegend=True,
+=======
+            showlegend=True,
+            legend=go.layout.Legend(
+                x=0,
+                y=1.0
+            ),
+>>>>>>> cf06dabed23cc9b5f7b1a61a5cbd9436289e4748
             margin=go.layout.Margin(l=40, r=40, t=40, b=40)
         )))
 
