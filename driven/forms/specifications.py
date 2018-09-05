@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
+import sqlite3
 
 import dash_core_components as dcc
 import dash_html_components as html
@@ -11,14 +12,17 @@ import plotly.graph_objs as go
 #####################################################################
 # PRODUCT DATA
 #####################################################################
-with sqlite3.connect('./driven/data/referential.sqlite3') as ref_db:
-    cursor = ref_db.cursor()
-    product_catalog = {
-        product[0]: product[1:]
-        for product in cursor.execute(
-            """select id, name, average_density, surcharge_angle
-            from bulk_material
-            order by name;""")}
+def _bulk_product_data():
+    with sqlite3.connect('./driven/data/referential.sqlite3') as ref_db:
+        cursor = ref_db.cursor()
+        product_catalog = {
+            product[0]: product[1:]
+            for product in cursor.execute(
+                """select id, name, average_density, surcharge_angle
+                from bulk_material
+                order by name;""")}
+
+    return product_catalog
 
 #####################################################################
 # INPUT ROWS
@@ -40,8 +44,7 @@ def specifications_form(id='specifications-form', style={}):
                 id='product-name-input',
                 options=[
                     {'label': product[0], 'value': pid}
-                    for pid, product in product_catalog.items()],
-                value=product_catalog.keys()[0],
+                    for pid, product in _bulk_product_data().items()],
                 clearable=False,
                 multi=False,
                 placeholder='Select a product')],

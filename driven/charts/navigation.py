@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import math
 
+import dash_core_components as dcc
 import plotly.graph_objs as go
 
 #####################################################################
 # RANDOM DATA
 #####################################################################
 def _random_navigation_data():
-    navigation_data = [
+    return [
         go.Bar(
             y=['carry'],
             x=[6],
@@ -66,7 +67,7 @@ def _random_navigation_data():
 #####################################################################
 # GRAPH
 #####################################################################
-def navigation_graph(id='navigation-graph', data=[])
+def navigation_graph(id='navigation-graph', data=[]):
     return dcc.Graph(
         id=id,
         figure=go.Figure(

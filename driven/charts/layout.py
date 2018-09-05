@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import math
 
+import dash_core_components as dcc
 import plotly.graph_objs as go
 
 #####################################################################

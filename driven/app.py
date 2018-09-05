@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 import math
-import sqlite3
 
 import dash
-import dash_core_components as dcc
 import dash_html_components as html
-import plotly.graph_objs as go
 
 from driven.charts.layout import conveyor_layout_graph
 from driven.charts.navigation import navigation_graph
-from driven.charts.spider import spider_graph
+from driven.charts.radar import radar_graph
 from driven.forms.objectives import objectives_form
 from driven.forms.specifications import specifications_form
 
@@ -90,10 +87,10 @@ app.layout = html.Div(
             style={'display': 'flex', 'columnCount': 2}),
         html.Div(
             children=[
-                conveyor_layout_graph(),
+                # conveyor_layout_graph(),
                 navigation_graph(),
-                spider_graph()],
-            style={'display': 'flex', 'columnCount': 2})],
+                radar_graph()],
+            style={'display': 'flex', 'columnCount': 3})],
     id='main-container',
     style=styles['main-container'])
 
@@ -125,21 +122,21 @@ def update_delta_y_label(y_range):
 def update_output_label(output_range):
     return display_value_in_label(output_range, 'Output (t/h)')
 
-@app.callback(
-    dash.dependencies.Output('product-density-input', 'value'),
-    [dash.dependencies.Input('product-name-input', 'value')])
-def update_density_input(product_id):
-    product = product_catalog.get(product_id, [])
-    if product:
-        return 0.001 * product[1]
+# @app.callback(
+#     dash.dependencies.Output('product-density-input', 'value'),
+#     [dash.dependencies.Input('product-name-input', 'value')])
+# def update_density_input(product_id):
+#     product = product_catalog.get(product_id, [])
+#     if product:
+#         return 0.001 * product[1]
 
-@app.callback(
-    dash.dependencies.Output('product-surcharge-angle-input', 'value'),
-    [dash.dependencies.Input('product-name-input', 'value')])
-def update_surcharge_angle_input(product_id):
-    product = product_catalog.get(product_id, [])
-    if product:
-        return 180.0 * product[2] / math.pi
+# @app.callback(
+#     dash.dependencies.Output('product-surcharge-angle-input', 'value'),
+#     [dash.dependencies.Input('product-name-input', 'value')])
+# def update_surcharge_angle_input(product_id):
+#     product = product_catalog.get(product_id, [])
+#     if product:
+#         return 180.0 * product[2] / math.pi
 
 #####################################################################
 # SERVER
