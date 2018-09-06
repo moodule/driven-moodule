@@ -7,7 +7,7 @@ import plotly.graph_objs as go
 #####################################################################
 # POLAR GRAPH
 #####################################################################
-def radar_graph(id='spider-graph', style={}):
+def radar_graph(id='radar-graph', style={}):
     data = [
         go.Scatterpolar(
             r = [7, 5, 3, 8],
