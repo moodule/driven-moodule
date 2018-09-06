@@ -1,28 +1,15 @@
 # -*- coding: utf-8 -*-
 import math
-import sqlite3
 
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 
+from driven._lib import *
+from driven.data.referential import bulk_material_data
+
 # TODO even the row height in the forms
 # TODO add spaces between labels and inputs
-
-#####################################################################
-# PRODUCT DATA
-#####################################################################
-def _bulk_product_data():
-    with sqlite3.connect('./driven/data/referential.sqlite3') as ref_db:
-        cursor = ref_db.cursor()
-        product_catalog = {
-            product[0]: product[1:]
-            for product in cursor.execute(
-                """select id, name, average_density, surcharge_angle
-                from bulk_material
-                order by name;""")}
-
-    return product_catalog
 
 #####################################################################
 # INPUT ROWS
@@ -44,7 +31,7 @@ def specifications_form(id='specifications-form', style={}):
                 id='product-name-input',
                 options=[
                     {'label': product[0], 'value': pid}
-                    for pid, product in _bulk_product_data().items()],
+                    for pid, product in bulk_material_data().items()],
                 clearable=False,
                 multi=False,
                 placeholder='Select a product')],
@@ -60,14 +47,3 @@ def specifications_form(id='specifications-form', style={}):
             children=[html.P(children=list(r)) for r in specification_form_rows]),
         id=id,
         style=style)
-
-def create_form_input_row(
-        label,
-        min=0.0,
-        max=1.0e3,
-        step=1.0,
-        value=0.0,
-        unit='',
-        type='slider',
-        display=True):
-    pass
