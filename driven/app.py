@@ -4,9 +4,11 @@ import math
 import dash
 import dash_html_components as html
 
+from driven._lib import *
 from driven.charts.layout import conveyor_layout_graph
 from driven.charts.navigation import navigation_graph
 from driven.charts.radar import radar_graph
+from driven.data.referential import bulk_material_data
 from driven.forms.objectives import objectives_form
 from driven.forms.specifications import specifications_form
 
@@ -28,7 +30,7 @@ app.css.append_css({'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 
 styles = {
     'main-container': {
-        'columnCount': 1,
+        # 'columnCount': 1,
         'backgroundColor': 'rgba(0,0,0,0.0)'},
     'specifications-form': {
         'flex': '1 0 50%',
@@ -41,6 +43,10 @@ styles = {
         'columnCount': 1,
         'backgroundColor': 'rgba(0,255,0,0.0)'},
     'conveyor-layout-graph': {
+        'flex': '1 0 50%',
+        'width': '50%',
+        'backgroundColor': 'rgba(0,0,255,0.0)'},
+    'navigation-graph': {
         'flex': '1 0 50%',
         'width': '50%',
         'backgroundColor': 'rgba(0,0,255,0.0)'}}
@@ -87,9 +93,15 @@ app.layout = html.Div(
             style={'display': 'flex', 'columnCount': 2}),
         html.Div(
             children=[
-                # conveyor_layout_graph(),
-                navigation_graph(),
+                navigation_graph(),],
+            style={'display': 'flex', 'columnCount': 2}),
+        html.Div(
+            children=[
                 radar_graph()],
+            style={'display': 'flex', 'columnCount': 2}),
+        html.Div(
+            children=[
+                conveyor_layout_graph(),],
             style={'display': 'flex', 'columnCount': 3})],
     id='main-container',
     style=styles['main-container'])
@@ -97,12 +109,6 @@ app.layout = html.Div(
 #####################################################################
 # CALLBACKS
 #####################################################################
-
-def display_value_in_label(value_range, label_text):
-    if value_range[0] == value_range[1]:
-        return '{} : {}'.format(label_text, value_range[0])
-    else:
-        return '{} : [{} ; {}]'.format(label_text, value_range[0], value_range[1])
 
 @app.callback(
     dash.dependencies.Output('delta-x-label', 'children'),
@@ -122,21 +128,22 @@ def update_delta_y_label(y_range):
 def update_output_label(output_range):
     return display_value_in_label(output_range, 'Output (t/h)')
 
-# @app.callback(
-#     dash.dependencies.Output('product-density-input', 'value'),
-#     [dash.dependencies.Input('product-name-input', 'value')])
-# def update_density_input(product_id):
-#     product = product_catalog.get(product_id, [])
-#     if product:
-#         return 0.001 * product[1]
+@app.callback(
+    dash.dependencies.Output('product-density-input', 'value'),
+    [dash.dependencies.Input('product-name-input', 'value')])
+def update_density_input(product_id):
+    product = bulk_material_data().get(product_id, [])
+    if product:
+        return 0.001 * product[1]
 
-# @app.callback(
-#     dash.dependencies.Output('product-surcharge-angle-input', 'value'),
-#     [dash.dependencies.Input('product-name-input', 'value')])
-# def update_surcharge_angle_input(product_id):
-#     product = product_catalog.get(product_id, [])
-#     if product:
-#         return 180.0 * product[2] / math.pi
+@app.callback(
+    dash.dependencies.Output('product-surcharge-angle-input', 'value'),
+    [dash.dependencies.Input('product-name-input', 'value')])
+def update_surcharge_angle_input(product_id):
+    product = bulk_material_data().get(product_id, [])
+    if product:
+        return 180.0 * product[2] / math.pi
+
 
 #####################################################################
 # SERVER
