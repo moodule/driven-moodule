@@ -16,27 +16,27 @@ def objectives_form(id='objectives-form', style={}):
         html.Label(
             children=l,
             id=l.lower() + '-label',
-            htmlFor=l.lower() + '-slider')
+            htmlFor=l.lower() + '-slider',
+            style={'flex': '1 1 auto'})
         for l in objective_labels]
 
     objective_input_sliders = [
-        dcc.Slider(
-            id=l.lower() + '-slider',
-            min=1,
-            max=4,
-            marks={j: str(j) for j in range(1, 5)} if i == 3 else {},
-            value=1 if i else 4,
-            vertical=True)
+        html.Div(
+            id=l.lower() + '-slider-div',
+            style={'flex': '1 1 auto', 'padding': '10px'},
+            children=[dcc.Slider(
+                id=l.lower() + '-slider',
+                min=1,
+                max=4,
+                marks={j: str(j) for j in range(1, 5)} if i == 3 else {},
+                value=1 if i else 4,
+                vertical=True)])
         for i, l in enumerate(objective_labels)]
-
-    objective_form_rows = zip(
-        objective_input_sliders,
-        objective_input_labels)
 
     return html.Form(
         children=html.Fieldset(
             children=[
-                html.P(children=objective_input_sliders, style={'flex': '5 0 auto', 'columnCount': 4, 'height': '100px', 'padding': '10px'}),
-                html.P(children=objective_input_labels, style={'flex': '1 0 auto', 'columnCount': 4,'padding': '10px'})]),
+                html.Div(children=objective_input_sliders, style={'display': 'flex', 'flex': '5 5 auto', 'columnCount': 4, 'height': '100px'}),
+                html.Div(children=objective_input_labels, style={'display': 'flex', 'flex': '1 1 auto', 'columnCount': 4})]),
         id=id,
         style=style)
