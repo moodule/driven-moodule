@@ -9,6 +9,7 @@ from driven.charts.layout import conveyor_layout_graph
 from driven.charts.navigation import navigation_graph
 from driven.charts.radar import radar_graph
 from driven.data.referential import bulk_material_data
+from driven.forms.design import local_design_form
 from driven.forms.objectives import objectives_form
 from driven.forms.specifications import specifications_form
 
@@ -93,7 +94,8 @@ app.layout = html.Div(
             style={'display': 'flex', 'columnCount': 2}),
         html.Div(
             children=[
-                navigation_graph(),],
+                navigation_graph(),
+                local_design_form(style=styles['specifications-form'])],
             style={'display': 'flex', 'columnCount': 2}),
         html.Div(
             children=[
@@ -111,14 +113,14 @@ app.layout = html.Div(
 #####################################################################
 
 @app.callback(
-    dash.dependencies.Output('delta-x-label', 'children'),
-    [dash.dependencies.Input('delta-x-input', 'value')])
+    dash.dependencies.Output('total-delta-x-label', 'children'),
+    [dash.dependencies.Input('total-delta-x-input', 'value')])
 def update_delta_x_label(x_range):
     return display_value_in_label(x_range, 'Delta-x (m)')
 
 @app.callback(
-    dash.dependencies.Output('delta-y-label', 'children'),
-    [dash.dependencies.Input('delta-y-input', 'value')])
+    dash.dependencies.Output('total-delta-y-label', 'children'),
+    [dash.dependencies.Input('total-delta-y-input', 'value')])
 def update_delta_y_label(y_range):
     return display_value_in_label(y_range, 'Delta-y (m)')
 
