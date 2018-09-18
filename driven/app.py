@@ -7,7 +7,12 @@ import dash_html_components as html
 from driven._lib import *
 from driven.charts.layout import conveyor_layout_graph
 from driven.charts.navigation import navigation_graph
-from driven.charts.radar import radar_graph
+from driven.charts.objectives import (
+    rating_overview_graph,
+    cost_graph,
+    safety_graph,
+    reliability_graph,
+    stability_graph)
 from driven.data.referential import bulk_material_data
 from driven.forms.design import local_design_form
 from driven.forms.objectives import objectives_form
@@ -99,17 +104,21 @@ app.layout = html.Div(
             style={'display': 'flex', 'columnCount': 2}),
         html.Div(
             children=[
-                radar_graph()],
-            style={'display': 'flex', 'columnCount': 2}),
+                rating_overview_graph(),
+                cost_graph(),
+                safety_graph(),
+                reliability_graph(),
+                stability_graph()],
+            style={'display': 'flex', 'columnCount': 5}),
         html.Div(
             children=[
                 conveyor_layout_graph(),],
-            style={'display': 'flex', 'columnCount': 3})],
+            style={'display': 'flex', 'columnCount': 1})],
     id='main-container',
     style=styles['main-container'])
 
 #####################################################################
-# CALLBACKS
+# EVENTS
 #####################################################################
 
 @app.callback(
