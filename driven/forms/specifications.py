@@ -18,13 +18,13 @@ def specifications_form(id='specifications-form', style={}):
     specification_form_rows = [
         [
             html.Label('Delta-x (m)', id='total-delta-x-label', htmlFor='total-delta-x-input'),
-            dcc.RangeSlider(id='total-delta-x-input', value=[1.0e1, 1.0e1], min=1.0, step=1.0, max=1.0e3)],
+            dcc.RangeSlider(id='total-delta-x-input', allowCross=False, value=[1.0e1, 1.0e1], min=1.0, step=1.0, max=1.0e3)],
         [
             html.Label('Delta-y (m)', id='total-delta-y-label', htmlFor='total-delta-y-input'),
-            dcc.RangeSlider(id='total-delta-y-input', value=[0.0, 0.0], min=-1.0e2, step=0.5, max=1.0e2)],
+            dcc.RangeSlider(id='total-delta-y-input', allowCross=False, value=[0.0, 0.0], min=-1.0e2, step=0.5, max=1.0e2)],
         [
             html.Label('Output (t/h)', id='output-label', htmlFor='output-input'),
-            dcc.RangeSlider(id='output-input', value=[10.0, 10.0], min=0.0, step=1.0, max=1.0e3)],
+            dcc.RangeSlider(id='output-input', allowCross=False, value=[0.0, 100.0], min=0.0, step=1.0, max=1.0e3)],
         [
             html.Label('Product', id='product-name-label', htmlFor='product-name-input'),
             dcc.Dropdown(
