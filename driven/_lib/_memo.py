@@ -7,7 +7,7 @@ from decorator import decorator
 @decorator
 def memoize(func, *args, **kwargs):
     if not hasattr(func, '__cache__'):
-        func.__cache__ = {}
+        setattr(func, '__cache__', dict())
 
     key = str(args) + str(kwargs)
     if key not in func.__cache__:
