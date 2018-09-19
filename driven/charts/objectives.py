@@ -167,9 +167,9 @@ def reliability_graph(id='reliability-graph', data=[]):
 # Stability
 #####################################################################
 def stability_graph(id='stability-graph', data=[]):
-    x = ['Pulley Traction (%)', 'Belt Tracking (%)']
-    y = [60, 80]
-    y2 = [100, 100]
+    x = ['Pulley Traction (%)', 'Belt Tracking (%)', 'Belt Lifting (m)']
+    y = [60, 80, 0]
+    y2 = [100, 100, 0]
     data = [
         go.Bar(
             name='User Design',
