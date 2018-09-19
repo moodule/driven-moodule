@@ -44,6 +44,6 @@ def specifications_form(id='specifications-form', style={}):
 
     return html.Form(
         children=html.Fieldset(
-            children=[html.P(children=list(r)) for r in specification_form_rows]),
+            children=[html.P(children=list(r), style={'padding':'0 10px 20px 10px'}) for r in specification_form_rows]),
         id=id,
         style=style)

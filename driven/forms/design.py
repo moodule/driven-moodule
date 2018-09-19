@@ -30,6 +30,6 @@ def local_design_form(id='local-design-form', style={}):
 
     return html.Form(
         children=html.Fieldset(
-            children=[html.P(children=list(r)) for r in rows]),
+            children=[html.P(children=list(r), style={'padding':'0 10px 20px 10px'}) for r in rows]),
         id=id,
         style=style)
