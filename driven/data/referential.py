@@ -18,6 +18,7 @@ def bulk_material_data():
             for product in cursor.execute(
                 """select id, name, average_density, surcharge_angle
                 from bulk_material
-                order by name;""")}
+                order by name
+                limit 10;""")}
 
     return product_catalog
