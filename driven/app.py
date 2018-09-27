@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import copy
 import math
 
 import dash
@@ -16,46 +17,28 @@ from driven.charts.objectives import (
 from driven.data.referential import bulk_material_data
 from driven.forms.design import local_design_form
 from driven.forms.objectives import objectives_form
-from driven.forms.specifications import specifications_form
+from driven.forms.specifications import (
+    specifications_form,
+    location_form)
+from driven.frame import (
+    header,
+    summary,
+    footer)
+
+#####################################################################
+# THIRD PARTY
+#####################################################################
+
+mapbox_access_token = ''
 
 #####################################################################
 # APP
 #####################################################################
 
 app = dash.Dash('Industrious')
+app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-stylesheets/2d266c578d2a6e8850ebce48fdb52759b2aef506/stylesheet-oil-and-gas.css'})
+
 server = app.server
-
-app.css.append_css({'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'})
-
-# app_style = {
-#     'columnCount': 2}
-
-#####################################################################
-# STYLES
-#####################################################################
-
-styles = {
-    'main-container': {
-        # 'columnCount': 1,
-        'backgroundColor': 'rgba(0,0,0,0.0)'},
-    'specifications-form': {
-        'flex': '1 0 50%',
-        'width': '50%',
-        'columnCount': 1,
-        'backgroundColor': 'rgba(255,0,0,0.0)'},
-    'objectives-form': {
-        'flex': '1 0 50%',
-        'width': '50%',
-        'columnCount': 1,
-        'backgroundColor': 'rgba(0,255,0,0.0)'},
-    'conveyor-layout-graph': {
-        'flex': '1 0 50%',
-        'width': '50%',
-        'backgroundColor': 'rgba(0,0,255,0.0)'},
-    'navigation-graph': {
-        'flex': '1 0 50%',
-        'width': '50%',
-        'backgroundColor': 'rgba(0,0,255,0.0)'}}
 
 #####################################################################
 # LAYOUT
@@ -63,64 +46,91 @@ styles = {
 
 app.layout = html.Div(
     children=[
+        header(),
+        summary(),
         html.Div(
             children=[
-                specifications_form(style=styles['specifications-form']),
-                objectives_form(style=styles['objectives-form'])],
-            style={'display': 'flex', 'columnCount': 2}),
+                specifications_form(),
+                location_form()],
+            className='row'),
         html.Div(
             children=[
                 navigation_graph(),
-                local_design_form(style=styles['specifications-form'])],
-            style={'display': 'flex', 'columnCount': 2}),
+                local_design_form()],
+            className='row'),
         html.Div(
             children=[
-                rating_overview_graph(),
-                cost_graph(),
                 safety_graph(),
-                reliability_graph(),
-                stability_graph()],
-            style={'display': 'flex', 'columnCount': 5}),
+                cost_graph(),
+                reliability_graph()],
+            className='row'),
         html.Div(
             children=[
-                conveyor_layout_graph(),],
-            style={'display': 'flex', 'columnCount': 1})],
-    id='main-container',
-    style=styles['main-container'])
+                conveyor_layout_graph()],
+            className='row')],
+    id='main_container',
+    className='ten columns offset-by-one')
+
+widget_layout = dict(
+    autosize=True,
+    height=500,
+    font=dict(color='#CCCCCC'),
+    titlefont=dict(color='#CCCCCC', size='14'),
+    margin=dict(
+        l=35,
+        r=35,
+        b=35,
+        t=45
+    ),
+    hovermode="closest",
+    plot_bgcolor="#191A1A",
+    paper_bgcolor="#020202",
+    legend=dict(font=dict(size=10), orientation='h'),
+    title='Satellite Overview',
+    mapbox=dict(
+        accesstoken=mapbox_access_token,
+        style="dark",
+        center=dict(
+            lon=-78.05,
+            lat=42.54
+        ),
+        zoom=7,
+    )
+)
 
 #####################################################################
 # EVENTS
 #####################################################################
 
 @app.callback(
-    dash.dependencies.Output('total-delta-x-label', 'children'),
-    [dash.dependencies.Input('total-delta-x-input', 'value')])
+    dash.dependencies.Output('total_delta_x_label', 'children'),
+    [dash.dependencies.Input('total_delta_x_input', 'value')])
 def update_delta_x_label(x_range):
     return display_value_in_label(x_range, 'Delta-x (m)')
 
 @app.callback(
-    dash.dependencies.Output('total-delta-y-label', 'children'),
-    [dash.dependencies.Input('total-delta-y-input', 'value')])
+    dash.dependencies.Output('total_delta_y_label', 'children'),
+    [dash.dependencies.Input('total_delta_y_input', 'value')])
 def update_delta_y_label(y_range):
     return display_value_in_label(y_range, 'Delta-y (m)')
 
 @app.callback(
-    dash.dependencies.Output('output-label', 'children'),
-    [dash.dependencies.Input('output-input', 'value')])
+    dash.dependencies.Output('output_label', 'children'),
+    [dash.dependencies.Input('output_input', 'value')])
 def update_output_label(output_range):
     return display_value_in_label(output_range, 'Output (t/h)')
 
 @app.callback(
-    dash.dependencies.Output('product-density-input', 'value'),
-    [dash.dependencies.Input('product-name-input', 'value')])
+    dash.dependencies.Output('product_density_input', 'value'),
+    [dash.dependencies.Input('product_name_input', 'value')])
 def update_density_input(product_id):
     product = bulk_material_data().get(product_id, [])
     if product:
         return 0.001 * product[1]
 
 @app.callback(
-    dash.dependencies.Output('product-surcharge-angle-input', 'value'),
-    [dash.dependencies.Input('product-name-input', 'value')])
+    dash.dependencies.Output('product_surcharge_angle_input', 'value'),
+    [dash.dependencies.Input('product_name_input', 'value')])
 def update_surcharge_angle_input(product_id):
     product = bulk_material_data().get(product_id, [])
     if product:
