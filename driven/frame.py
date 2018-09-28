@@ -37,7 +37,7 @@ def summary():
                 className='eight columns',
                 style={'text-align': 'center'}),
             html.H5(
-                'Lifespan : ',
+                'Lifespan : ?',
                 id='lifespan_text',
                 className='two columns',
                 style={'text-align': 'right'}),],
