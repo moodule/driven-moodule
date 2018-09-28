@@ -7,11 +7,11 @@ from driven.charts.layout import (
 from driven.charts.navigation import (
     navigation_graph)
 from driven.charts.objectives import (
-    rating_overview_graph,
-    cost_graph,
-    safety_graph,
-    reliability_graph,
-    stability_graph)
+    make_overview_figure,
+    make_cost_figure,
+    make_safety_figure,
+    make_reliability_figure,
+    make_stability_figure)
 
 __author__ = """David Mougeolle"""
 __email__ = 'david.mougeolle@moodule.net'
@@ -24,8 +24,8 @@ __all__ += [
     'navigation_graph']
 
 __all__ += [
-    'rating_overview_graph',
-    'cost_graph',
-    'safety_graph',
-    'reliability_graph',
-    'stability_graph']
+    'make_overview_figure',
+    'make_cost_figure',
+    'make_safety_figure',
+    'make_reliability_figure',
+    'make_stability_figure']
