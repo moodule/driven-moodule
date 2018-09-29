@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import copy
 import math
 
 import dash_core_components as dcc
@@ -117,12 +118,25 @@ def specifications_form():
                 _geometry_form(),
                 _product_form()]),
         id='specifications_form',
-        className='six columns')
+        className='eight columns')
 
 ###############################################################################
 # LOCATION
 ###############################################################################
+def make_location_map(layout):
+    data = [
+        go.Scattermapbox(
+            lat=['45.5017'],
+            lon=['-73.5673'],
+            mode='markers',
+            marker=dict(
+                size=14),
+            text=['Montreal'])]
+
+    return dict(data=data, layout=layout)
+
 def location_form():
     return html.Div(
+        children=[dcc.Graph(id='location_map')],
         id='location_form',
-        className='six columns')
+        className='four columns')

@@ -20,7 +20,8 @@ from driven.forms.design import local_design_form
 from driven.forms.objectives import objectives_form
 from driven.forms.specifications import (
     specifications_form,
-    location_form)
+    location_form,
+    make_location_map)
 from driven.frame import (
     header,
     summary,
@@ -42,7 +43,7 @@ app.css.append_css({'external_url': 'https://cdn.rawgit.com/plotly/dash-app-styl
 server = app.server
 
 #####################################################################
-# LAYOUT
+# PAGE LAYOUT
 #####################################################################
 
 app.layout = html.Div(
@@ -72,7 +73,31 @@ app.layout = html.Div(
     id='main_container',
     className='ten columns offset-by-one')
 
-widget_layout = dict(
+#####################################################################
+# WIDGET LAYOUT
+#####################################################################
+
+input_layout = dict(
+    autosize=True,
+    font=dict(color='#000000'),
+    margin=dict(
+        l=0,
+        r=0,
+        b=0,
+        t=0),
+    hovermode="closest",
+    plot_bgcolor="#FFFFFF",
+    paper_bgcolor="#FFFFFF",
+    showlegend=False,
+    mapbox=dict(
+        accesstoken=mapbox_access_token,
+        style="light",
+        center=dict(
+            lon=-78.05,
+            lat=42.54),
+        zoom=7))
+
+output_layout = dict(
     autosize=True,
     height=500,
     font=dict(color='#CCCCCC'),
@@ -81,8 +106,7 @@ widget_layout = dict(
         l=35,
         r=35,
         b=35,
-        t=45
-    ),
+        t=45),
     hovermode="closest",
     plot_bgcolor="#191A1A",
     paper_bgcolor="#020202",
@@ -93,11 +117,8 @@ widget_layout = dict(
         style="dark",
         center=dict(
             lon=-78.05,
-            lat=42.54
-        ),
-        zoom=7,
-    )
-)
+            lat=42.54),
+        zoom=7))
 
 #####################################################################
 # UPDATE SPECIFICATIONS
@@ -142,6 +163,16 @@ def update_surcharge_angle_input(product_id):
 ###############################################################################
 
 @app.callback(
+    dash.dependencies.Output('location_map', 'figure'),
+    [
+        dash.dependencies.Input('total_delta_x_input', 'value'),
+        dash.dependencies.Input('total_delta_y_input', 'value'),
+        dash.dependencies.Input('output_input', 'value'),
+        dash.dependencies.Input('product_name_input', 'value')])
+def update_location_map(x, y, q, p):
+    return make_location_map(input_layout)
+
+@app.callback(
     dash.dependencies.Output('safety_graph', 'figure'),
     [
         dash.dependencies.Input('total_delta_x_input', 'value'),
@@ -149,7 +180,7 @@ def update_surcharge_angle_input(product_id):
         dash.dependencies.Input('output_input', 'value'),
         dash.dependencies.Input('product_name_input', 'value')])
 def update_safety_graph(x, y, q, p):
-    return make_safety_figure(widget_layout)
+    return make_safety_figure(output_layout)
 
 @app.callback(
     dash.dependencies.Output('cost_graph', 'figure'),
@@ -159,7 +190,7 @@ def update_safety_graph(x, y, q, p):
         dash.dependencies.Input('output_input', 'value'),
         dash.dependencies.Input('product_name_input', 'value')])
 def update_safety_graph(x, y, q, p):
-    return make_cost_figure(widget_layout)
+    return make_cost_figure(output_layout)
 
 @app.callback(
     dash.dependencies.Output('reliability_graph', 'figure'),
@@ -169,7 +200,7 @@ def update_safety_graph(x, y, q, p):
         dash.dependencies.Input('output_input', 'value'),
         dash.dependencies.Input('product_name_input', 'value')])
 def update_safety_graph(x, y, q, p):
-    return make_reliability_figure(widget_layout)
+    return make_reliability_figure(output_layout)
 
 #####################################################################
 # SERVER
