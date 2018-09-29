@@ -354,11 +354,12 @@ ol {
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 120px;
-    background-color: #555;
-    color: #fff;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
+    background-color: #abe2fb;
+    color: #000;
+    text-align: left;
+    padding: 5px;
+    border-radius: 0;
+    border: 1px solid #000;
 
     /* Position the tooltip text */
     position: absolute;
@@ -381,7 +382,7 @@ ol {
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: #555 transparent transparent transparent;
+    border-color: #000 transparent transparent transparent;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
