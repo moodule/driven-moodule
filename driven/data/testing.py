@@ -14,15 +14,30 @@ Subpackages
 
 from __future__ import division, print_function, absolute_import
 
+import random
+
 import plotly.graph_objs as go
+from practical.memory import memoize
 
 #####################################################################
-# FAKE DESIGN VECTORS
+# STYLE
 #####################################################################
 
+def bar_style(red, green, blue):
+    return dict(
+        orientation = 'v',
+        width=0.5,
+        opacity=0.6,
+        marker=dict(
+            color='rgb({},{},{},1.0)'.format(red, green, blue),
+            line=dict(
+                color='rgb({},{},{},0.5)'.format(red, green, blue),
+                width=1.5)))
+
 #####################################################################
-# FAKE LYAOUTS
+# FAKE LAYOUTS
 #####################################################################
+@memoize
 def _random_layout_data():
     slope = 0.2
     steps = [0.4, 0.2, 1.5, 0.4, -1.0, -3.0, -2.5]
@@ -90,6 +105,7 @@ def _random_layout_data():
 #####################################################################
 # FAKE NAVIGATION
 #####################################################################
+@memoize
 def _random_navigation_data():
     return [
         go.Bar(
@@ -146,3 +162,74 @@ def _random_navigation_data():
             name='Takeup',
             orientation='h',
             marker=dict(line=dict(width=3)))]
+
+#####################################################################
+# FAKE COSTS
+#####################################################################
+@memoize
+def _random_cost_data():
+    buying_cost = [
+        go.Bar(
+            x=['Buying'],
+            y=[random.randrange(10)],
+            name='Idlers',
+            **bar_style(160, 200, 220)),
+        go.Bar(
+            x=['Buying'],
+            y=[random.randrange(10)],
+            name='Belt',
+            **bar_style(160, 200, 220)),
+        go.Bar(
+            x=['Buying'],
+            y=[random.randrange(10)],
+            name='Pulleys',
+            **bar_style(160, 200, 220)),
+        go.Bar(
+            x=['Buying'],
+            y=[random.randrange(10)],
+            name='Drives & Reducers',
+            **bar_style(160, 200, 220))]
+
+    operating_cost = [
+        go.Bar(
+            x=['Operating'],
+            y=[random.randrange(10)],
+            name='Best Case',
+            **bar_style(160, 200, 220)),
+        go.Bar(
+            x=['Operating'],
+            y=[random.randrange(10)],
+            name='Average Case',
+            **bar_style(160, 200, 220)),
+        go.Bar(
+            x=['Operating'],
+            y=[random.randrange(10)],
+            name='Worst Case',
+            **bar_style(160, 200, 220))]
+
+    maintenance_cost = [
+        go.Bar(
+            x=['Maintenance'],
+            y=[random.randrange(10)],
+            name='Best Case',
+            **bar_style(160, 200, 220)),
+        go.Bar(
+            x=['Maintenance'],
+            y=[random.randrange(10)],
+            name='Average Case',
+            **bar_style(160, 200, 220)),
+        go.Bar(
+            x=['Maintenance'],
+            y=[random.randrange(10)],
+            name='Worst Case',
+            **bar_style(160, 200, 220))]
+
+    return buying_cost + operating_cost + maintenance_cost
+
+@memoize
+def _random_safety_data():
+    return
+
+@memoize
+def _random_reliability_data():
+    return

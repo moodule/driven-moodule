@@ -3,7 +3,11 @@ import copy
 
 import plotly.graph_objs as go
 
-from driven.data.testing import _random_navigation_data
+from driven.data.testing import (
+    _random_navigation_data,
+    _random_cost_data,
+    _random_safety_data,
+    _random_reliability_data)
 
 #####################################################################
 # OVERVIEW GRAPH
@@ -35,36 +39,9 @@ def make_overview_figure(layout):
 # COST
 #####################################################################
 def make_cost_figure(layout):
-    x = ['Buying Cost', 'Operating Cost', 'Maintenance Cost']
-    y = [20, 14, 23]
-    y2 = [16, 12, 10]
-    data = [
-        go.Bar(
-            name='User Design',
-            x=x,
-            y=y,
-            textposition = 'auto',
-            marker=dict(
-                color='rgb(158,202,225)',
-                line=dict(
-                    color='rgb(8,48,107)',
-                    width=1.5),),
-            opacity=0.6),
-        go.Bar(
-            name='Optimal Design',
-            x=x,
-            y=y2,
-            textposition = 'auto',
-            marker=dict(
-                color='rgb(58,200,225)',
-                line=dict(
-                    color='rgb(8,48,107)',
-                    width=1.5),),
-            opacity=0.6)]
-
     cost_layout = copy.deepcopy(layout)
     cost_layout['title'] = 'Project Costs'
-    cost_layout['barmode'] = 'group'
+    cost_layout['barmode'] = 'stack'
     cost_layout['xaxis'] = dict(
         tickfont=dict(
             size=14,
@@ -82,10 +59,10 @@ def make_cost_figure(layout):
         y=1.0,
         bgcolor='rgba(255, 255, 255, 0)',
         bordercolor='rgba(255, 255, 255, 0)')
-    cost_layout['showlegend'] = True
+    cost_layout['showlegend'] = False
     cost_layout['margin'] = go.layout.Margin(l=40, r=40, t=40, b=40)
 
-    return dict(data=data, layout=go.Layout(cost_layout))
+    return dict(data=_random_cost_data(), layout=go.Layout(cost_layout))
 
 #####################################################################
 # SAFETY
