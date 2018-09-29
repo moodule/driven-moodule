@@ -4,7 +4,7 @@ from __future__ import division, print_function, absolute_import
 
 import sqlite3
 
-from driven._lib import *
+from practical.memory import memoize
 
 #####################################################################
 # PRODUCT DATA
