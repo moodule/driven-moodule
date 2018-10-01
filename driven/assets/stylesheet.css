@@ -348,23 +348,27 @@ ol {
   float: left; }
 
 
-/* Misc
+/* Tooltips
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 /* Tooltip text */
+.tooltip {
+    position: relative;
+}
+
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 120px;
-    background-color: #abe2fb;
-    color: #000;
+    width: auto;
+    background-color: rgba(170,230,250,0.6);
+    color: black;
     text-align: left;
     padding: 5px;
     border-radius: 0;
-    border: 1px solid #000;
+    border: 1px solid #000000;
 
     /* Position the tooltip text */
     position: absolute;
-    z-index: 1;
-    bottom: 125%;
+    z-index: 100;
+    bottom: 100%;
     left: 50%;
     margin-left: -60px;
 
@@ -382,7 +386,7 @@ ol {
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: #000 transparent transparent transparent;
+    border-color: black transparent transparent transparent;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
