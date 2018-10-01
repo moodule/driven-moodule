@@ -18,38 +18,38 @@ from driven.data.referential import bulk_material_data
 def _geometry_form():
     return html.Div(
         children=[
-            html.Div(
-                children=[
-                    html.Label(
-                        'Delta_x (m)',
-                        id='total_delta_x_label',
-                        htmlFor='total_delta_x_input'),
-                    dcc.RangeSlider(
-                        id='total_delta_x_input',
-                        allowCross=False,
-                        value=[1.0, 1.0],
-                        min=0.0,
-                        step=0.1,
-                        max=4.0,
-                        marks={0.0:'1 m', 1.0:'10 m', 2.0:'100 m', 3.0:'1 km', 4.0:'10 km'})],
-                className='eight columns'),
-            html.Div(
-                children=[
-                    html.Label(
-                        'Delta_y (m)',
-                        id='total_delta_y_label',
-                        htmlFor='total_delta_y_input'),
-                    dcc.RangeSlider(
-                        id='total_delta_y_input',
-                        allowCross=False,
-                        value=[0.0, 0.0],
-                        min=-1.0e2,
-                        step=0.5,
-                        max=1.0e2,
-                        vertical=True,
-                        marks={-100.0:'-100 m', -10.0:'-10 m', 0.0:'0', 10.0:'10 m', 100.0:'100 m'})],
-                className='four columns')],
-        className='row')
+            html.Label(
+                'Over',
+                className='two columns'),
+            dcc.RangeSlider(
+                id='total_delta_x_input',
+                allowCross=False,
+                value=[1.0, 1.0],
+                min=0.0,
+                step=0.1,
+                max=4.0,
+                marks={0.0:'1 m', 1.0:'10 m', 2.0:'100 m', 3.0:'1 km', 4.0:'10 km'},
+                className='four columns'),
+            html.Label(
+                '',
+                id='total_delta_x_label',
+                className='two columns'),
+            dcc.RangeSlider(
+                id='total_delta_y_input',
+                allowCross=False,
+                value=[0.0, 0.0],
+                min=-1.0e2,
+                step=0.5,
+                max=1.0e2,
+                vertical=True,
+                marks={-100.0:'-100 m', -10.0:'-10 m', 0.0:'0', 10.0:'10 m', 100.0:'100 m'},
+                className='two columns'),
+            html.Label(
+                '',
+                id='total_delta_y_label',
+                className='two columns')],
+        className='row',
+        style={'height':'100px'})
 
 def _product_form():
     return html.Div(
@@ -57,23 +57,8 @@ def _product_form():
             html.Div(
                 children=[
                     html.Label(
-                        'Output (t/h)',
-                        id='output_label',
-                        htmlFor='output_input'),
-                    dcc.RangeSlider(
-                        id='output_input',
-                        allowCross=False,
-                        value=[0.0, 100.0],
-                        min=0.0,
-                        step=1.0,
-                        max=1.0e3)],
-                    className='eight columns'),
-            html.Div(
-                children=[
-                    html.Label(
-                        'Product',
-                        id='product_name_label',
-                        htmlFor='product_name_input'),
+                        'Transporting',
+                        className='two columns'),
                     dcc.Dropdown(
                         id='product_name_input',
                         clearable=False,
@@ -82,8 +67,24 @@ def _product_form():
                         placeholder='Select a product',
                         options=[
                             {'label': product[0], 'value': pid}
-                            for pid, product in bulk_material_data().items()])],
-                    className='four columns'),
+                            for pid, product in bulk_material_data().items()],
+                        className='three columns'),
+                    html.Label(
+                        'At',
+                        className='one columns'),
+                    dcc.RangeSlider(
+                        id='output_input',
+                        allowCross=False,
+                        value=[0.0, 100.0],
+                        min=0.0,
+                        step=1.0,
+                        max=1.0e3,
+                        className='four columns'),
+                    html.Label(
+                        '',
+                        id='output_label',
+                        className='two columns')],
+                    className='row'),
             html.Div(
                 children=[
                     html.Label(
@@ -115,8 +116,8 @@ def specifications_form():
     return html.Form(
         children=html.Fieldset(
             children=[
-                _geometry_form(),
-                _product_form()]),
+                _product_form(),
+                _geometry_form(),]),
         id='specifications_form',
         className='eight columns')
 
