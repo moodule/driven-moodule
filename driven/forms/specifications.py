@@ -13,44 +13,8 @@ from driven.data.referential import bulk_material_data
 # TODO add spaces between labels and inputs
 
 #####################################################################
-# SPECIFICATIONS
+# PRODUCT
 #####################################################################
-def _geometry_form():
-    return html.Div(
-        children=[
-            html.Label(
-                'Over',
-                className='two columns'),
-            dcc.RangeSlider(
-                id='total_delta_x_input',
-                allowCross=False,
-                value=[1.0, 1.0],
-                min=0.0,
-                step=0.1,
-                max=4.0,
-                marks={0.0:'1 m', 1.0:'10 m', 2.0:'100 m', 3.0:'1 km', 4.0:'10 km'},
-                className='four columns'),
-            html.Label(
-                '',
-                id='total_delta_x_label',
-                className='two columns'),
-            dcc.RangeSlider(
-                id='total_delta_y_input',
-                allowCross=False,
-                value=[0.0, 0.0],
-                min=-1.0e2,
-                step=0.5,
-                max=1.0e2,
-                vertical=True,
-                marks={-100.0:'-100 m', -10.0:'-10 m', 0.0:'0', 10.0:'10 m', 100.0:'100 m'},
-                className='two columns'),
-            html.Label(
-                '',
-                id='total_delta_y_label',
-                className='two columns')],
-        className='row',
-        style={'height':'100px'})
-
 def _product_form():
     return html.Div(
         children=[
@@ -110,20 +74,97 @@ def _product_form():
                         step=1.0,
                         max=90.0)],
                 style={'display': 'none'})],
-        className='row')
+        className='three rows')
 
-def specifications_form():
-    return html.Form(
-        children=html.Fieldset(
-            children=[
-                _product_form(),
-                _geometry_form(),]),
-        id='specifications_form',
-        className='eight columns')
+#####################################################################
+# GEOMETRY
+#####################################################################
+def _geometry_form():
+    return html.Div(
+        children=[
+            html.Label(
+                'Over',
+                className='two columns'),
+            dcc.RangeSlider(
+                id='total_delta_x_input',
+                allowCross=False,
+                value=[1.0, 1.0],
+                min=0.0,
+                step=0.1,
+                max=4.0,
+                marks={0.0:'1 m', 1.0:'10 m', 2.0:'100 m', 3.0:'1 km', 4.0:'10 km'},
+                className='four columns'),
+            html.Label(
+                '',
+                id='total_delta_x_label',
+                className='two columns'),
+            dcc.RangeSlider(
+                id='total_delta_y_input',
+                allowCross=False,
+                value=[0.0, 0.0],
+                min=-1.0e2,
+                step=0.5,
+                max=1.0e2,
+                vertical=True,
+                marks={-100.0:'-100 m', -10.0:'-10 m', 0.0:'0', 10.0:'10 m', 100.0:'100 m'},
+                className='two columns'),
+            html.Label(
+                '',
+                id='total_delta_y_label',
+                className='two columns')],
+        className='three rows')
 
-###############################################################################
+#####################################################################
+# META
+#####################################################################
+def _priority_form():
+    return html.Div(
+        children=[
+            html.Label(
+                'With',
+                className='two columns'),
+            dcc.Dropdown(
+                id='priority_input',
+                clearable=False,
+                searchable=True,
+                multi=False,
+                placeholder='Select a priority',
+                options=[
+                    {'label': 'Cost', 'value': 0},
+                    {'label': 'Reliability', 'value': 1},
+                    {'label': 'Safety', 'value': 2}],
+                className='two columns'),
+            html.Label(
+                'as priority',
+                className='two columns')],
+        className='three rows')
+
+def _scenario_form():
+     return html.Div(
+        children=[
+            html.Label(
+                'Considering',
+                className='two columns'),
+            dcc.Dropdown(
+                id='scenario_input',
+                clearable=False,
+                searchable=True,
+                multi=False,
+                placeholder='Select a scenario',
+                options=[
+                    {'label': 'All', 'value': 0},
+                    {'label': 'The best', 'value': 1},
+                    {'label': 'The average', 'value': 2},
+                    {'label': 'The worst', 'value': 3}],
+                className='two columns'),
+            html.Label(
+                'case scenario',
+                className='two columns')],
+        className='three rows')
+
+#####################################################################
 # LOCATION
-###############################################################################
+#####################################################################
 def make_location_map(layout):
     data = [
         go.Scattermapbox(
@@ -140,4 +181,19 @@ def location_form():
     return html.Div(
         children=[dcc.Graph(id='location_map')],
         id='location_form',
-        className='four columns')
+        className='four columns',
+        style={'height':'300px'})
+
+#####################################################################
+# CONTAINER
+#####################################################################
+def specifications_form():
+    return html.Div(
+        id='specifications_form',
+        children=[
+            _product_form(),
+            _geometry_form(),
+            _priority_form(),
+            _scenario_form()],
+        className='eight columns',
+        style={'height':'300px'})
