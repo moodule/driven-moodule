@@ -80,7 +80,7 @@ app.layout = html.Div(
             children=[
                 specifications_form(),
                 location_form()],
-            className='row'),
+            className='offset-by-one row'),
         html.Div(
             id='objective_graph_container',
             children=[
@@ -106,7 +106,6 @@ app.layout = html.Div(
 
 input_layout = dict(
     autosize=True,
-    height=300,
     font=dict(color='#000000'),
     margin=dict(
         l=0,
