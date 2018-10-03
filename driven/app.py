@@ -31,12 +31,8 @@ from driven.frame import (
     update_title,
     update_risk_summary_text,
     update_risk_summary_tooltip,
-    update_buying_cost_summary_text,
-    update_buying_cost_summary_tooltip,
-    update_operating_cost_summary_text,
-    update_operating_cost_summary_tooltip,
-    update_maintenance_cost_summary_text,
-    update_maintenance_cost_summary_tooltip,
+    update_cost_summary_text,
+    update_cost_summary_tooltip,
     update_reliability_summary_text,
     update_reliability_summary_tooltip,
     make_footer)
@@ -80,7 +76,8 @@ app.layout = html.Div(
             children=[
                 specifications_form(),
                 location_form()],
-            className='offset-by-one row'),
+            className='row',
+            style={'margin-top':'40px'}),
         html.Div(
             id='objective_graph_container',
             children=[
@@ -190,64 +187,24 @@ def _update_risk_summary_tooltip(x, y, q, p):
 #####################################################################
 
 @app.callback(
-    dash.dependencies.Output('buying_cost_summary_text', 'children'),
+    dash.dependencies.Output('cost_summary_text', 'children'),
     [
         dash.dependencies.Input('total_delta_x_input', 'value'),
         dash.dependencies.Input('total_delta_y_input', 'value'),
         dash.dependencies.Input('output_input', 'value'),
         dash.dependencies.Input('product_name_input', 'value')])
 def _update_buying_cost_summary_text(x, y, q, p):
-    return update_buying_cost_summary_text()
+    return update_cost_summary_text()
 
 @app.callback(
-    dash.dependencies.Output('buying_cost_summary_tooltip', 'children'),
+    dash.dependencies.Output('cost_summary_tooltip', 'children'),
     [
         dash.dependencies.Input('total_delta_x_input', 'value'),
         dash.dependencies.Input('total_delta_y_input', 'value'),
         dash.dependencies.Input('output_input', 'value'),
         dash.dependencies.Input('product_name_input', 'value')])
 def _update_buying_cost_summary_tooltip(x, y, q, p):
-    return update_buying_cost_summary_tooltip()
-
-@app.callback(
-    dash.dependencies.Output('operating_cost_summary_text', 'children'),
-    [
-        dash.dependencies.Input('total_delta_x_input', 'value'),
-        dash.dependencies.Input('total_delta_y_input', 'value'),
-        dash.dependencies.Input('output_input', 'value'),
-        dash.dependencies.Input('product_name_input', 'value')])
-def _update_operating_cost_summary_text(x, y, q, p):
-    return update_operating_cost_summary_text()
-
-@app.callback(
-    dash.dependencies.Output('operating_cost_summary_tooltip', 'children'),
-    [
-        dash.dependencies.Input('total_delta_x_input', 'value'),
-        dash.dependencies.Input('total_delta_y_input', 'value'),
-        dash.dependencies.Input('output_input', 'value'),
-        dash.dependencies.Input('product_name_input', 'value')])
-def _update_operating_cost_summary_tooltip(x, y, q, p):
-    return update_operating_cost_summary_tooltip()
-
-@app.callback(
-    dash.dependencies.Output('maintenance_cost_summary_text', 'children'),
-    [
-        dash.dependencies.Input('total_delta_x_input', 'value'),
-        dash.dependencies.Input('total_delta_y_input', 'value'),
-        dash.dependencies.Input('output_input', 'value'),
-        dash.dependencies.Input('product_name_input', 'value')])
-def _update_maintenance_cost_summary_text(x, y, q, p):
-    return update_maintenance_cost_summary_text()
-
-@app.callback(
-    dash.dependencies.Output('maintenance_cost_summary_tooltip', 'children'),
-    [
-        dash.dependencies.Input('total_delta_x_input', 'value'),
-        dash.dependencies.Input('total_delta_y_input', 'value'),
-        dash.dependencies.Input('output_input', 'value'),
-        dash.dependencies.Input('product_name_input', 'value')])
-def _update_maintenance_cost_summary_tooltip(x, y, q, p):
-    return update_maintenance_cost_summary_tooltip()
+    return update_cost_summary_tooltip()
 
 #####################################################################
 # UPDATE RELIABILITY SUMMARY
