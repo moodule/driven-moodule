@@ -173,63 +173,114 @@ def _random_cost_data():
             x=['Buying'],
             y=[random.randrange(10)],
             name='Idlers',
-            **bar_style(160, 200, 220)),
+            **bar_style(60, 200, 230)),
         go.Bar(
             x=['Buying'],
             y=[random.randrange(10)],
             name='Belt',
-            **bar_style(160, 200, 220)),
+            **bar_style(60, 200, 230)),
         go.Bar(
             x=['Buying'],
             y=[random.randrange(10)],
             name='Pulleys',
-            **bar_style(160, 200, 220)),
+            **bar_style(60, 200, 230)),
         go.Bar(
             x=['Buying'],
             y=[random.randrange(10)],
             name='Drives & Reducers',
-            **bar_style(160, 200, 220))]
+            **bar_style(60, 200, 230))]
 
     operating_cost = [
         go.Bar(
             x=['Operating'],
             y=[random.randrange(10)],
             name='Best Case',
-            **bar_style(160, 200, 220)),
+            **bar_style(60, 200, 230)),
         go.Bar(
             x=['Operating'],
             y=[random.randrange(10)],
             name='Average Case',
-            **bar_style(160, 200, 220)),
+            **bar_style(60, 200, 230)),
         go.Bar(
             x=['Operating'],
             y=[random.randrange(10)],
             name='Worst Case',
-            **bar_style(160, 200, 220))]
+            **bar_style(60, 200, 230))]
 
     maintenance_cost = [
         go.Bar(
             x=['Maintenance'],
             y=[random.randrange(10)],
             name='Best Case',
-            **bar_style(160, 200, 220)),
+            **bar_style(60, 200, 230)),
         go.Bar(
             x=['Maintenance'],
             y=[random.randrange(10)],
             name='Average Case',
-            **bar_style(160, 200, 220)),
+            **bar_style(60, 200, 230)),
         go.Bar(
             x=['Maintenance'],
             y=[random.randrange(10)],
             name='Worst Case',
-            **bar_style(160, 200, 220))]
+            **bar_style(60, 200, 230))]
 
     return buying_cost + operating_cost + maintenance_cost
 
 @memoize
 def _random_safety_data():
-    return
+    snatching_risks = [
+        go.Bar(
+            x=['Snatching'],
+            y=[random.randrange(400)],
+            name='Idlers',
+            **bar_style(60, 200, 230)),
+        go.Bar(
+            x=['Snatching'],
+            y=[random.randrange(4)],
+            name='Pulleys',
+            **bar_style(60, 200, 230))]
+
+    falling_risks = [
+        go.Bar(
+            x=['Falling'],
+            y=[random.randrange(200)],
+            name='Idlers',
+            **bar_style(60, 200, 230))]
+
+    cutting_risks = [
+        go.Bar(
+            x=['Cutting'],
+            y=[random.randrange(10)],
+            name='?',
+            **bar_style(60, 200, 230))]
+
+    return snatching_risks + falling_risks + cutting_risks
 
 @memoize
 def _random_reliability_data():
-    return
+    x = ['Belt', 'Idlers', 'Pulleys', 'Laggings', 'Splice']
+    best_case = [random.randrange(160), random.randrange(120), random.randrange(100), random.randrange(200), random.randrange(200)]
+    average_case = [1.2 * w for w in best_case]
+    worst_case = [1.4 * w for w in best_case]
+
+    data = [
+        go.Bar(
+            name='Best Case',
+            x=x,
+            y=best_case,
+            textposition = 'auto',
+            opacity=0.6),
+        go.Bar(
+            name='Average Case',
+            x=x,
+            y=average_case,
+            textposition = 'auto',
+            opacity=0.6),
+        go.Bar(
+            name='Worst Case',
+            x=x,
+            y=worst_case,
+            textposition = 'auto',
+            opacity=0.6)]
+
+    return data
