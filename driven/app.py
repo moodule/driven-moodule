@@ -28,7 +28,6 @@ from driven.frame import (
     make_cost_summary_container,
     make_reliability_summary_container,
     make_risk_summary_container,
-    update_title,
     update_risk_summary_text,
     update_risk_summary_tooltip,
     update_cost_summary_text,
@@ -93,6 +92,10 @@ app.layout = html.Div(
                     children=[dcc.Graph(id='reliability_graph')],
                     className='four columns',
                     style={'margin-top': '10'}),],
+            className='row'),
+        html.Div(
+            id='design_container',
+            # children=[local_design_form()],
             className='row')],
     id='main_container',
     className='ten columns offset-by-one')
@@ -143,20 +146,6 @@ output_layout = dict(
             lon=-78.05,
             lat=42.54),
         zoom=7))
-
-#####################################################################
-# UPDATE HEADER
-#####################################################################
-
-@app.callback(
-    dash.dependencies.Output('title_text', 'children'),
-    [
-        dash.dependencies.Input('total_delta_x_input', 'value'),
-        dash.dependencies.Input('total_delta_y_input', 'value'),
-        dash.dependencies.Input('output_input', 'value'),
-        dash.dependencies.Input('product_name_input', 'value')])
-def _update_title_text(x, y, q, p):
-    return update_title()
 
 #####################################################################
 # UPDATE RISK SUMMARY
@@ -234,23 +223,35 @@ def _update_reliability_summary_tooltip(x, y, q, p):
 # UPDATE SPECIFICATIONS
 #####################################################################
 
+def exp_range(r):
+    return [10.0**e for e in r]
+
 @app.callback(
     dash.dependencies.Output('total_delta_x_label', 'children'),
     [dash.dependencies.Input('total_delta_x_input', 'value')])
 def _update_delta_x_label(x_range):
-    return display_value_in_label(x_range, '{} m horizontally and')
+    return display_value_in_label(
+        value_range=exp_range(x_range),
+        label_text='{} m',
+        precision=0)
 
 @app.callback(
     dash.dependencies.Output('total_delta_y_label', 'children'),
     [dash.dependencies.Input('total_delta_y_input', 'value')])
 def _update_delta_y_label(y_range):
-    return display_value_in_label(y_range, '{} m vertically')
+    return display_value_in_label(
+        value_range=y_range,
+        label_text='{} m',
+        precision=0)
 
 @app.callback(
     dash.dependencies.Output('output_label', 'children'),
     [dash.dependencies.Input('output_input', 'value')])
 def _update_output_label(output_range):
-    return display_value_in_label(output_range, '{} t/h')
+    return display_value_in_label(
+        value_range=exp_range(output_range),
+        label_text='{} t/h',
+        precision=0)
 
 @app.callback(
     dash.dependencies.Output('product_density_input', 'value'),
