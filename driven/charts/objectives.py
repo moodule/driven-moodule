@@ -71,7 +71,7 @@ def make_safety_figure(layout):
     safety_layout = copy.deepcopy(layout)
     safety_layout['title'] = 'Safety Concerns'
     safety_layout['barmode'] = 'stack'
-    safety_layout['showlegend'] = True
+    safety_layout['showlegend'] = False
     safety_layout['margin'] = go.layout.Margin(l=40, r=40, t=40, b=40)
 
     return dict(data=_random_safety_data(), layout=go.Layout(safety_layout))
