@@ -7,9 +7,19 @@ import dash_html_components as html
 #####################################################################
 
 def make_title():
-    return html.H1(
-        id='title_text',
-        className='eight columns')
+    return html.Div(
+        children=[
+            dcc.Input(
+                id='conveyor_name_input',
+                placeholder='',
+                type='text',
+                value='New Belt Conveyor - Design',
+                className='title-input'),
+            html.H1(
+                '',
+                id='title_text')],
+        className='eleven columns',
+        style={'display':'flex', 'align-items':'center'})
 
 def make_logo():
     return html.Img(
@@ -21,9 +31,6 @@ def make_logo():
             'width': '225',
             'float': 'right',
             'position': 'relative'})
-
-def update_title():
-    return 'New Belt Conveyor - Design'
 
 #####################################################################
 # SUMMARY
@@ -54,7 +61,7 @@ def make_reliability_summary_container():
         className='two columns tooltip')
 
 def update_risk_summary_text():
-    return 'Risks : 800 Sources'
+    return 'Risks : 800'
 
 def update_risk_summary_tooltip():
     return 'Can be lowered to 560'
