@@ -2,12 +2,30 @@
 
 from __future__ import division, print_function, absolute_import
 
-def display_value_in_label(value_range, label_text):
+import dash_html_components as html
+
+#####################################################################
+# LABELS
+#####################################################################
+def display_value_in_label(value_range, label_text, precision=0):
+    float_format = '{{:.{}f}}'.format(precision)
+    single_value_format = float_format
+    range_value_format = '[{} ; {}]'.format(float_format, float_format)
+
     if value_range and value_range:
+
         if value_range[0] == value_range[1]:
-            return label_text.format(value_range[0])
+            return label_text.format(
+                single_value_format.format(value_range[0]))
         else:
             return label_text.format(
-                '[{} ; {}]'.format(value_range[0], value_range[1]))
+                range_value_format.format(value_range[0], value_range[1]))
     else:
         return label_text
+
+#####################################################################
+# WRAP DCC ELEMENTS
+#####################################################################
+def wrap_dcc_element(
+    ):
+    return
