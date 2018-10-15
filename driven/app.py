@@ -16,12 +16,17 @@ from driven.charts.objectives import (
     make_reliability_figure,
     make_stability_figure)
 from driven.data.referential import bulk_material_data
-from driven.forms.design import local_design_form
-from driven.forms.objectives import objectives_form
+from driven.forms.design import (
+    make_global_design_geometry_form,
+    make_global_design_components_form,
+    make_global_design_systems_form,
+    make_local_design_form)
+from driven.forms.objectives import (
+    make_objectives_form)
 from driven.forms.specifications import (
-    specifications_form,
-    location_form,
-    make_location_map)
+    make_location_form,
+    make_location_map,
+    make_specifications_form)
 from driven.frame import (
     make_title,
     make_logo,
@@ -73,8 +78,8 @@ app.layout = html.Div(
         html.Div(
             id='specifications_container',
             children=[
-                specifications_form(),
-                location_form()],
+                make_specifications_form(),
+                make_location_form()],
             className='row',
             style={'margin-top':'40px'}),
         html.Div(
@@ -95,7 +100,10 @@ app.layout = html.Div(
             className='row'),
         html.Div(
             id='design_container',
-            # children=[local_design_form()],
+            children=[
+                make_global_design_geometry_form(),
+                make_global_design_components_form(),
+                make_global_design_systems_form()],
             className='row')],
     id='main_container',
     className='ten columns offset-by-one')
