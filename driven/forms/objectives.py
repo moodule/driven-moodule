@@ -5,7 +5,8 @@ import dash_html_components as html
 #####################################################################
 # PRODUCT DATA
 #####################################################################
-def objectives_form(id='objectives-form', style={}):
+
+def make_objectives_form(id='objectives-form', style={}):
     objective_labels = [
         'Safety',
         'Cost',

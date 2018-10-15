@@ -6,7 +6,6 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 
-from driven._lib import *
 from driven.data.referential import bulk_material_data
 
 # TODO even the row height in the forms
@@ -185,7 +184,7 @@ def make_location_map(layout):
 
     return dict(data=data, layout=layout)
 
-def location_form():
+def make_location_form():
     return html.Div(
         children=[dcc.Graph(id='location_map')],
         id='location_form',
@@ -224,7 +223,7 @@ def _hidden_form():
 #####################################################################
 # CONTAINER
 #####################################################################
-def specifications_form():
+def make_specifications_form():
     return html.Div(
         id='specifications_form',
         children=[
