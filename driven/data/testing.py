@@ -17,22 +17,13 @@ from __future__ import division, print_function, absolute_import
 import random
 
 import plotly.graph_objs as go
+
 from practical.memory import memoize
 
-#####################################################################
-# STYLE
-#####################################################################
-
-def bar_style(red, green, blue):
-    return dict(
-        orientation = 'v',
-        width=0.5,
-        opacity=0.6,
-        marker=dict(
-            color='rgb({},{},{},1.0)'.format(red, green, blue),
-            line=dict(
-                color='rgb({},{},{},0.5)'.format(red, green, blue),
-                width=1.5)))
+from driven._lib._charts import (
+    _bar_style,
+    _scatter_style,
+    wrap_data)
 
 #####################################################################
 # FAKE LAYOUTS
@@ -173,56 +164,56 @@ def _random_cost_data():
             x=['Buying'],
             y=[random.randrange(10)],
             name='Idlers',
-            **bar_style(60, 200, 230)),
+            **_bar_style(60, 200, 230)),
         go.Bar(
             x=['Buying'],
             y=[random.randrange(10)],
             name='Belt',
-            **bar_style(60, 200, 230)),
+            **_bar_style(60, 200, 230)),
         go.Bar(
             x=['Buying'],
             y=[random.randrange(10)],
             name='Pulleys',
-            **bar_style(60, 200, 230)),
+            **_bar_style(60, 200, 230)),
         go.Bar(
             x=['Buying'],
             y=[random.randrange(10)],
             name='Drives & Reducers',
-            **bar_style(60, 200, 230))]
+            **_bar_style(60, 200, 230))]
 
     operating_cost = [
         go.Bar(
             x=['Operating'],
             y=[random.randrange(10)],
             name='Best Case',
-            **bar_style(60, 200, 230)),
+            **_bar_style(60, 200, 230)),
         go.Bar(
             x=['Operating'],
             y=[random.randrange(10)],
             name='Average Case',
-            **bar_style(60, 200, 230)),
+            **_bar_style(60, 200, 230)),
         go.Bar(
             x=['Operating'],
             y=[random.randrange(10)],
             name='Worst Case',
-            **bar_style(60, 200, 230))]
+            **_bar_style(60, 200, 230))]
 
     maintenance_cost = [
         go.Bar(
             x=['Maintenance'],
             y=[random.randrange(10)],
             name='Best Case',
-            **bar_style(60, 200, 230)),
+            **_bar_style(60, 200, 230)),
         go.Bar(
             x=['Maintenance'],
             y=[random.randrange(10)],
             name='Average Case',
-            **bar_style(60, 200, 230)),
+            **_bar_style(60, 200, 230)),
         go.Bar(
             x=['Maintenance'],
             y=[random.randrange(10)],
             name='Worst Case',
-            **bar_style(60, 200, 230))]
+            **_bar_style(60, 200, 230))]
 
     return buying_cost + operating_cost + maintenance_cost
 
@@ -233,26 +224,26 @@ def _random_safety_data():
             x=['Snatching'],
             y=[random.randrange(400)],
             name='Idlers',
-            **bar_style(60, 200, 230)),
+            **_bar_style(60, 200, 230)),
         go.Bar(
             x=['Snatching'],
             y=[random.randrange(4)],
             name='Pulleys',
-            **bar_style(60, 200, 230))]
+            **_bar_style(60, 200, 230))]
 
     falling_risks = [
         go.Bar(
             x=['Falling'],
             y=[random.randrange(200)],
             name='Idlers',
-            **bar_style(60, 200, 230))]
+            **_bar_style(60, 200, 230))]
 
     cutting_risks = [
         go.Bar(
             x=['Cutting'],
             y=[random.randrange(10)],
             name='?',
-            **bar_style(60, 200, 230))]
+            **_bar_style(60, 200, 230))]
 
     return snatching_risks + falling_risks + cutting_risks
 
